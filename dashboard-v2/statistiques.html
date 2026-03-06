@@ -2,219 +2,156 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Stats - Airbnb Agent</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Jarvis AI - Statistiques</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
+    :root {
+      --primary: #00d4ff; --secondary: #7c3aed; --accent: #f472b6;
+      --dark: #0a0a0f; --dark-light: #13131f; --dark-card: #1a1a2e; --dark-hover: #252542;
+      --text: #ffffff; --text-muted: #8b8b9e;
+      --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+    }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0a0a0f;
-      color: #fff;
-      line-height: 1.5;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
+      font-family: 'Inter', sans-serif;
+      background: var(--dark); color: var(--text);
+      line-height: 1.5; overflow-x: hidden;
     }
-    
+    .bg-animation {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 20% 20%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 80%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
+      pointer-events: none; z-index: 0;
+    }
     .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: #15151f;
-      border-bottom: 1px solid #252538;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      z-index: 100;
+      position: fixed; top: 0; left: 0; right: 0; height: 70px;
+      background: rgba(19, 19, 31, 0.95); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; z-index: 1000;
     }
-    
-    .logo { font-weight: 700; color: #FF5A5F; font-size: 18px; }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      font-size: 20px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); }
+      50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.6); }
+    }
+    .logo-text {
+      font-weight: 700; font-size: 20px;
+      background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
     .menu-btn {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 24px;
-      padding: 8px;
+      width: 44px; height: 44px; background: var(--dark-card);
+      border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 12px;
+      color: var(--primary); font-size: 20px; cursor: pointer;
     }
-    
-    .nav {
-      position: fixed;
-      top: 60px;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: #15151f;
-      z-index: 99;
-      display: none;
-      flex-direction: column;
-      padding: 20px;
+    .sidenav {
+      position: fixed; top: 70px; left: 0; bottom: 0; width: 280px;
+      background: rgba(19, 19, 31, 0.98); backdrop-filter: blur(20px);
+      border-right: 1px solid rgba(0, 212, 255, 0.1);
+      padding: 24px 16px; transform: translateX(-100%);
+      transition: transform 0.3s ease; z-index: 999;
     }
-    .nav.active { display: flex; }
-    .nav a {
-      color: #8b8b9e;
-      text-decoration: none;
-      padding: 16px;
-      font-size: 16px;
-      border-radius: 12px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .sidenav.active { transform: translateX(0); }
+    .nav-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 12px; padding-left: 12px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      color: var(--text-muted); text-decoration: none; border-radius: 12px;
+      margin-bottom: 4px; font-size: 15px; font-weight: 500;
     }
-    .nav a.active, .nav a:hover {
-      background: #FF5A5F;
-      color: #fff;
+    .nav-item:hover, .nav-item.active { background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%); color: white; }
+    .main { padding: 90px 20px 100px; position: relative; z-index: 1; }
+    .page-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .page-subtitle { color: var(--text-muted); margin-bottom: 24px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card {
+      background: var(--dark-card); border: 1px solid rgba(0, 212, 255, 0.1);
+      border-radius: 20px; padding: 20px; position: relative; overflow: hidden;
     }
-    
-    .content {
-      padding: 76px 16px 100px;
-      max-width: 100%;
+    .stat-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
     }
-    
-    h1 { font-size: 24px; margin-bottom: 20px; }
-    
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-    .stat {
-      background: #252538;
-      border-radius: 16px;
-      padding: 16px;
-    }
-    .stat-label {
-      font-size: 12px;
-      color: #8b8b9e;
-      margin-bottom: 8px;
-    }
-    .stat-value {
-      font-size: 24px;
-      font-weight: 700;
-    }
-    
-    .card {
-      background: #252538;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-    .card h3 {
-      font-size: 16px;
-      margin-bottom: 16px;
-      color: #8b8b9e;
-    }
-    
-    .chart-placeholder {
-      height: 200px;
-      background: #1f1f2e;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #8b8b9e;
-      font-size: 14px;
-    }
-    
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      background: #15151f;
-      border-top: 1px solid #252538;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding-bottom: env(safe-area-inset-bottom);
-      z-index: 100;
-    }
-    .bottom-nav a {
-      color: #8b8b9e;
-      text-decoration: none;
-      font-size: 11px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      padding: 8px 16px;
-    }
-    .bottom-nav a.active { color: #FF5A5F; }
-    .bottom-nav a span { font-size: 20px; }
-    
-    @media (min-width: 768px) {
-      .content { max-width: 1200px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
-      .stats { grid-template-columns: repeat(4, 1fr); }
-      .bottom-nav { display: none; }
-      .nav { display: flex !important; position: fixed; left: 0; top: 0; bottom: 0; width: 240px; right: auto; }
-      .header { left: 240px; }
-      .content { margin-left: 240px; }
-      .menu-btn { display: none; }
+    .stat-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; }
+    .stat-icon.blue { background: rgba(0, 212, 255, 0.1); }
+    .stat-icon.green { background: rgba(16, 185, 129, 0.1); }
+    .stat-icon.orange { background: rgba(245, 158, 11, 0.1); }
+    .stat-icon.pink { background: rgba(244, 114, 182, 0.1); }
+    .stat-value { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+    .stat-label { font-size: 13px; color: var(--text-muted); }
+    .section { background: var(--dark-card); border: 1px solid rgba(0, 212, 255, 0.1); border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .section-title { font-size: 18px; font-weight: 600; }
+    .chart-container { position: relative; height: 250px; margin-top: 16px; }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 80px; background: rgba(19, 19, 31, 0.98); backdrop-filter: blur(20px); border-top: 1px solid rgba(0, 212, 255, 0.1); display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom, 0); z-index: 1000; }
+    .bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 16px; color: var(--text-muted); text-decoration: none; font-size: 11px; font-weight: 500; }
+    .bottom-nav-item.active { color: var(--primary); }
+    .bottom-nav-item span:first-child { font-size: 22px; }
+    @media (min-width: 1024px) {
+      .header { left: 280px; } .sidenav { transform: translateX(0); } .main { margin-left: 280px; padding: 90px 32px 40px; } .menu-btn, .bottom-nav { display: none; } .stats-grid { grid-template-columns: repeat(4, 1fr); }
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <div class="logo">🤖 Airbnb Agent</div>
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-  </div>
-  
-  <nav class="nav" id="nav">
-    <a href="index.html">📊 Dashboard</a>
-    <a href="demandes.html">📨 Demandes</a>
-    <a href="statistiques.html" class="active">📈 Stats</a>
-    <a href="parametres.html">⚙️ Paramètres</a>
+  <div class="bg-animation"></div>
+  <header class="header">
+    <a href="index.html" class="logo"><div class="logo-icon">🤖</div><div class="logo-text">Jarvis AI</div></a>
+    <button class="menu-btn" onclick="toggleNav()">☰</button>
+  </header>
+  <nav class="sidenav" id="sidenav">
+    <div class="nav-title">Menu Principal</div>
+    <a href="index.html" class="nav-item"><span>📊</span>Dashboard</a>
+    <a href="demandes.html" class="nav-item"><span>📨</span>Demandes</a>
+    <a href="statistiques.html" class="nav-item active"><span>📈</span>Statistiques</a>
+    <div class="nav-title">Configuration</div>
+    <a href="parametres.html" class="nav-item"><span>⚙️</span>Paramètres</a>
   </nav>
-  
-  <div class="content">
-    <h1>Statistiques</h1>
-    
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-label">Total demandes</div>
-        <div class="stat-value" style="color: #FF5A5F;">127</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Conversion</div>
-        <div class="stat-value" style="color: #10B981;">68%</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Revenus</div>
-        <div class="stat-value" style="color: #F59E0B;">45.2k</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Panier moyen</div>
-        <div class="stat-value" style="color: #3B82F6;">920€</div>
-      </div>
+  <main class="main">
+    <h1 class="page-title">Statistiques</h1>
+    <p class="page-subtitle">Analyse de vos performances</p>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-icon blue">📨</div><div class="stat-value" style="color: var(--primary);">127</div><div class="stat-label">Total demandes</div></div>
+      <div class="stat-card"><div class="stat-icon green">📈</div><div class="stat-value" style="color: var(--success);">68%</div><div class="stat-label">Taux conversion</div></div>
+      <div class="stat-card"><div class="stat-icon orange">€</div><div class="stat-value" style="color: var(--warning);">45.2k</div><div class="stat-label">Revenus totaux</div></div>
+      <div class="stat-card"><div class="stat-icon pink">🛒</div><div class="stat-value" style="color: var(--accent);">920€</div><div class="stat-label">Panier moyen</div></div>
     </div>
-    
-    <div class="card">
-      <h3>Évolution des demandes</h3>
-      <div class="chart-placeholder">📊 Graphique ici</div>
+    <div class="section">
+      <div class="section-header"><h2 class="section-title">Évolution des demandes</h2></div>
+      <div class="chart-container"><canvas id="demandsChart"></canvas></div>
     </div>
-    
-    <div class="card">
-      <h3>Types d'événements</h3>
-      <div class="chart-placeholder">🥧 Camembert ici</div>
+    <div class="section">
+      <div class="section-header"><h2 class="section-title">Types d'événements</h2></div>
+      <div class="chart-container"><canvas id="eventsChart"></canvas></div>
     </div>
-  </div>
-  
+  </main>
   <nav class="bottom-nav">
-    <a href="index.html"><span>📊</span>Dashboard</a>
-    <a href="demandes.html"><span>📨</span>Demandes</a>
-    <a href="statistiques.html" class="active"><span>📈</span>Stats</a>
-    <a href="parametres.html"><span>⚙️</span>Réglages</a>
+    <a href="index.html" class="bottom-nav-item"><span>📊</span>Dashboard</a>
+    <a href="demandes.html" class="bottom-nav-item"><span>📨</span>Demandes</a>
+    <a href="statistiques.html" class="bottom-nav-item active"><span>📈</span>Stats</a>
+    <a href="parametres.html" class="bottom-nav-item"><span>⚙️</span>Réglages</a>
   </nav>
-  
   <script>
-    function toggleMenu() {
-      document.getElementById('nav').classList.toggle('active');
-    }
+    function toggleNav() { document.getElementById('sidenav').classList.toggle('active'); }
+    document.addEventListener('click', (e) => { const nav = document.getElementById('sidenav'); const btn = document.querySelector('.menu-btn'); if (!nav.contains(e.target) && !btn.contains(e.target)) nav.classList.remove('active'); });
+    new Chart(document.getElementById('demandsChart'), {
+      type: 'line',
+      data: { labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'], datasets: [{ label: 'Demandes', data: [12, 19, 15, 25, 22, 30], borderColor: '#00d4ff', backgroundColor: 'rgba(0, 212, 255, 0.1)', tension: 0.4, fill: true }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b8b9e' } }, x: { grid: { display: false }, ticks: { color: '#8b8b9e' } } } }
+    });
+    new Chart(document.getElementById('eventsChart'), {
+      type: 'doughnut',
+      data: { labels: ['Anniversaire', 'Cousinade', 'EVG/EVJF', 'Baby shower', 'Autre'], datasets: [{ data: [38, 25, 18, 12, 7], backgroundColor: ['#00d4ff', '#7c3aed', '#f472b6', '#10b981', '#f59e0b'] }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#8b8b9e', padding: 20 } } } }
+    });
   </script>
 </body>
 </html>
