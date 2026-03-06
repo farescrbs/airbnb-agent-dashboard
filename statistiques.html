@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Statistiques — Airbnb Agent Pro</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -48,6 +48,12 @@
         <button onclick="auth.logout()" style="background:none;border:none;color:var(--gray);cursor:pointer;margin-top:8px;font-size:0.8rem;">Déconnexion</button>
       </div>
     </aside>
+
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+      <div class="mobile-logo">🤖 Agent Pro</div>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+    </div>
 
     <!-- Main Content -->
     <main class="main-content">

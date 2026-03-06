@@ -2,6 +2,24 @@
 let currentInquiry = null;
 let currentFilter = 'all';
 
+// Mobile menu toggle
+function toggleMobileMenu() {
+  const sidebar = document.querySelector('.sidebar');
+  sidebar.classList.toggle('active');
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
+  const sidebar = document.querySelector('.sidebar');
+  const menuBtn = document.querySelector('.mobile-menu-btn');
+  
+  if (sidebar && sidebar.classList.contains('active')) {
+    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+      sidebar.classList.remove('active');
+    }
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   // Check auth
   if (!window.location.href.includes('index.html')) {
