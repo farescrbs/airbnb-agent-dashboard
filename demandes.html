@@ -2,132 +2,287 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Demandes — Airbnb Agent Pro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Demandes - Airbnb Agent</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #15151f;
+      border-bottom: 1px solid #252538;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 100;
+    }
+    
+    .logo { font-weight: 700; color: #FF5A5F; font-size: 18px; }
+    .menu-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      padding: 8px;
+    }
+    
+    .nav {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #15151f;
+      z-index: 99;
+      display: none;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .nav.active { display: flex; }
+    .nav a {
+      color: #8b8b9e;
+      text-decoration: none;
+      padding: 16px;
+      font-size: 16px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav a.active, .nav a:hover {
+      background: #FF5A5F;
+      color: #fff;
+    }
+    
+    .content {
+      padding: 76px 16px 100px;
+      max-width: 100%;
+    }
+    
+    h1 { font-size: 24px; margin-bottom: 20px; }
+    
+    .filters {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .filter {
+      padding: 10px 16px;
+      background: #252538;
+      border: none;
+      color: #8b8b9e;
+      border-radius: 20px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .filter.active {
+      background: #FF5A5F;
+      color: #fff;
+    }
+    
+    .card {
+      background: #252538;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .client {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FF5A5F, #ff6b8a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .client-name { font-weight: 600; font-size: 16px; }
+    .client-event { font-size: 14px; color: #8b8b9e; }
+    .score {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .score.high { background: rgba(16,185,129,0.2); color: #10B981; }
+    .score.medium { background: rgba(245,158,11,0.2); color: #F59E0B; }
+    .score.low { background: rgba(239,68,68,0.2); color: #ef4444; }
+    .meta {
+      display: flex;
+      gap: 16px;
+      font-size: 14px;
+      color: #8b8b9e;
+      margin-bottom: 12px;
+    }
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .btn-approve { background: #10B981; color: #fff; }
+    .btn-reject { background: #ef4444; color: #fff; }
+    .btn-view { background: #252538; color: #fff; border: 1px solid #252538; }
+    
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: #15151f;
+      border-top: 1px solid #252538;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding-bottom: env(safe-area-inset-bottom);
+      z-index: 100;
+    }
+    .bottom-nav a {
+      color: #8b8b9e;
+      text-decoration: none;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 16px;
+    }
+    .bottom-nav a.active { color: #FF5A5F; }
+    .bottom-nav a span { font-size: 20px; }
+    
+    @media (min-width: 768px) {
+      .content { max-width: 1200px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+      .bottom-nav { display: none; }
+      .nav { display: flex !important; position: fixed; left: 0; top: 0; bottom: 0; width: 240px; right: auto; }
+      .header { left: 240px; }
+      .content { margin-left: 240px; }
+      .menu-btn { display: none; }
+    }
+  </style>
 </head>
 <body>
-  <div class="dashboard">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-logo">🤖 Agent Pro</div>
-      
-      <ul class="nav-menu">
-        <li class="nav-item">
-          <a href="dashboard.html" class="nav-link">
-            <span>📊</span> Dashboard
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="demandes.html" class="nav-link active">
-            <span>📨</span> Demandes
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="statistiques.html" class="nav-link">
-            <span>📈</span> Statistiques
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="parametres.html" class="nav-link">
-            <span>⚙️</span> Paramètres
-          </a>
-        </li>
-      </ul>
-      
-      <div class="sidebar-footer">
-        <div class="user-info">
-          <div class="user-avatar">A</div>
+  <div class="header">
+    <div class="logo">🤖 Airbnb Agent</div>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+  
+  <nav class="nav" id="nav">
+    <a href="index.html">📊 Dashboard</a>
+    <a href="demandes.html" class="active">📨 Demandes</a>
+    <a href="statistiques.html">📈 Stats</a>
+    <a href="parametres.html">⚙️ Paramètres</a>
+  </nav>
+  
+  <div class="content">
+    <h1>Toutes les demandes</h1>
+    
+    <div class="filters">
+      <button class="filter active">Toutes</button>
+      <button class="filter">En attente</button>
+      <button class="filter">Approuvées</button>
+      <button class="filter">Refusées</button>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <div class="client">
+          <div class="avatar">MD</div>
           <div>
-            <div class="user-name">Admin</div>
-            <div class="user-role">Propriétaire</div>
+            <div class="client-name">Marie D.</div>
+            <div class="client-event">Anniversaire</div>
           </div>
         </div>
-        <button onclick="auth.logout()" style="background:none;border:none;color:var(--gray);cursor:pointer;margin-top:8px;font-size:0.8rem;">Déconnexion</button>
+        <div class="score high">92</div>
       </div>
-    </aside>
-
-    <!-- Mobile Header -->
-    <div class="mobile-header">
-      <div class="mobile-logo">🤖 Agent Pro</div>
-      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+      <div class="meta">
+        <span>📅 15 juillet</span>
+        <span>👥 25 pers.</span>
+        <span>💰 900€</span>
+      </div>
+      <div class="actions">
+        <button class="btn btn-view">👁️ Voir</button>
+        <button class="btn btn-approve">✅</button>
+        <button class="btn btn-reject">❌</button>
+      </div>
     </div>
-
-    <!-- Main Content -->
-    <main class="main-content">
-      <!-- Header -->
-      <div class="header">
-        <h2>Toutes les demandes</h2>
-        <div class="header-actions">
-          <button class="btn btn-secondary" onclick="exportData()">📥 Exporter</button>
-          <button class="btn btn-primary" onclick="refreshData()">🔄 Actualiser</button>
+    
+    <div class="card">
+      <div class="card-header">
+        <div class="client">
+          <div class="avatar">TL</div>
+          <div>
+            <div class="client-name">Thomas L.</div>
+            <div class="client-event">Cousinade</div>
+          </div>
         </div>
+        <div class="score medium">65</div>
       </div>
-
-      <!-- Filters -->
-      <div class="filters-bar">
-        <div class="filter-tabs">
-          <button class="filter-tab active" data-filter="all">Toutes</button>
-          <button class="filter-tab" data-filter="pending">En attente</button>
-          <button class="filter-tab" data-filter="approved">Approuvées</button>
-          <button class="filter-tab" data-filter="rejected">Refusées</button>
-        </div>
-        <div class="search-box">
-          <input type="text" id="search" placeholder="Rechercher un client, événement...">
-        </div>
+      <div class="meta">
+        <span>📅 22 août</span>
+        <span>👥 35 pers.</span>
+        <span>💰 1050€</span>
       </div>
-
-      <!-- Table -->
-      <div class="table-container">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Client</th>
-              <th>Événement</th>
-              <th>Date</th>
-              <th>Personnes</th>
-              <th>Score</th>
-              <th>Statut</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="demandes-table">
-            <!-- Filled by JS -->
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Pagination -->
-      <div class="pagination">
-        <button class="btn btn-secondary" disabled>← Précédent</button>
-        <span>Page 1 sur 1</span>
-        <button class="btn btn-secondary" disabled>Suivant →</button>
-      </div>
-    </main>
-  </div>
-
-  <!-- Modal -->
-  <div class="modal-overlay" id="modal">
-    <div class="modal modal-large">
-      <div class="modal-header">
-        <h3>Détail de la demande</h3>
-        <button class="modal-close" onclick="closeModal()">×</button>
-      </div>
-      <div class="modal-body" id="modal-body">
-        <!-- Filled by JS -->
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
-        <button class="btn btn-secondary" onclick="editResponse()">✏️ Modifier réponse</button>
-        <button class="btn" style="background: var(--danger); color: white;" onclick="rejectInquiry()">❌ Refuser</button>
-        <button class="btn btn-primary" onclick="approveInquiry()">✅ Approuver</button>
+      <div class="actions">
+        <button class="btn btn-view">👁️ Voir</button>
+        <button class="btn btn-approve">✅</button>
+        <button class="btn btn-reject">❌</button>
       </div>
     </div>
   </div>
-
-  <script src="js/api.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/demandes.js"></script>
+  
+  <nav class="bottom-nav">
+    <a href="index.html"><span>📊</span>Dashboard</a>
+    <a href="demandes.html" class="active"><span>📨</span>Demandes</a>
+    <a href="statistiques.html"><span>📈</span>Stats</a>
+    <a href="parametres.html"><span>⚙️</span>Réglages</a>
+  </nav>
+  
+  <script>
+    function toggleMenu() {
+      document.getElementById('nav').classList.toggle('active');
+    }
+  </script>
 </body>
 </html>
