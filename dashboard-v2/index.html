@@ -2,41 +2,494 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Connexion — Airbnb Agent Pro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Airbnb Agent</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Header fixe */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #15151f;
+      border-bottom: 1px solid #252538;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 100;
+    }
+    
+    .logo { font-weight: 700; color: #FF5A5F; font-size: 18px; }
+    
+    .menu-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      padding: 8px;
+    }
+    
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #15151f;
+      z-index: 99;
+      display: none;
+      flex-direction: column;
+      padding: 20px;
+    }
+    
+    .nav.active { display: flex; }
+    
+    .nav a {
+      color: #8b8b9e;
+      text-decoration: none;
+      padding: 16px;
+      font-size: 16px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .nav a.active, .nav a:hover {
+      background: #FF5A5F;
+      color: #fff;
+    }
+    
+    /* Contenu */
+    .content {
+      padding: 76px 16px 100px;
+      max-width: 100%;
+    }
+    
+    h1 { font-size: 24px; margin-bottom: 20px; }
+    
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    
+    .stat {
+      background: #252538;
+      border-radius: 16px;
+      padding: 16px;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: #8b8b9e;
+      margin-bottom: 8px;
+    }
+    
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+    }
+    
+    /* Filtres */
+    .filters {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .filter {
+      padding: 10px 16px;
+      background: #252538;
+      border: none;
+      color: #8b8b9e;
+      border-radius: 20px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    
+    .filter.active {
+      background: #FF5A5F;
+      color: #fff;
+    }
+    
+    /* Cards */
+    .card {
+      background: #252538;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .client {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FF5A5F, #ff6b8a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    .client-name { font-weight: 600; font-size: 16px; }
+    .client-event { font-size: 14px; color: #8b8b9e; }
+    
+    .score {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    
+    .score.high { background: rgba(16,185,129,0.2); color: #10B981; }
+    .score.medium { background: rgba(245,158,11,0.2); color: #F59E0B; }
+    .score.low { background: rgba(239,68,68,0.2); color: #ef4444; }
+    
+    .meta {
+      display: flex;
+      gap: 16px;
+      font-size: 14px;
+      color: #8b8b9e;
+      margin-bottom: 12px;
+    }
+    
+    .preview {
+      font-size: 14px;
+      color: #c5c5d3;
+      line-height: 1.5;
+    }
+    
+    /* Bottom nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: #15151f;
+      border-top: 1px solid #252538;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding-bottom: env(safe-area-inset-bottom);
+      z-index: 100;
+    }
+    
+    .bottom-nav a {
+      color: #8b8b9e;
+      text-decoration: none;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 16px;
+    }
+    
+    .bottom-nav a.active { color: #FF5A5F; }
+    .bottom-nav a span { font-size: 20px; }
+    
+    /* Boutons */
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+    
+    .btn-primary {
+      background: #FF5A5F;
+      color: #fff;
+    }
+    
+    .btn-secondary {
+      background: #252538;
+      color: #fff;
+    }
+    
+    /* Login */
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .login-box {
+      width: 100%;
+      max-width: 340px;
+    }
+    
+    .login-logo {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .login-logo h1 {
+      color: #FF5A5F;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    
+    .login-logo p { color: #8b8b9e; }
+    
+    .input {
+      width: 100%;
+      padding: 14px 16px;
+      background: #252538;
+      border: 1px solid #252538;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    
+    .input:focus {
+      outline: none;
+      border-color: #FF5A5F;
+    }
+    
+    label {
+      display: block;
+      font-size: 14px;
+      color: #8b8b9e;
+      margin-bottom: 6px;
+    }
+    
+    /* Table */
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 -16px;
+      padding: 0 16px;
+    }
+    
+    table {
+      width: 100%;
+      min-width: 600px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #252538;
+    }
+    
+    th {
+      color: #8b8b9e;
+      font-weight: 500;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    
+    /* Desktop */
+    @media (min-width: 768px) {
+      .content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+      
+      .stats {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      
+      .bottom-nav { display: none; }
+      
+      .nav {
+        display: flex !important;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 240px;
+        right: auto;
+      }
+      
+      .header {
+        left: 240px;
+      }
+      
+      .content {
+        margin-left: 240px;
+        padding-top: 76px;
+      }
+      
+      .menu-btn { display: none; }
+    }
+  </style>
 </head>
 <body>
-  <div class="login-container">
-    <div class="login-box">
-      <div class="login-logo">
-        <h1>🤖 Airbnb Agent Pro</h1>
-        <p>Connectez-vous pour gérer vos demandes</p>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">🤖 Airbnb Agent</div>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+  
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="active">📊 Dashboard</a>
+    <a href="demandes.html">📨 Demandes</a>
+    <a href="statistiques.html">📈 Stats</a>
+    <a href="parametres.html">⚙️ Paramètres</a>
+    <a href="#" onclick="logout()">🚪 Déconnexion</a>
+  </nav>
+  
+  <!-- Content -->
+  <div class="content">
+    <h1>Dashboard</h1>
+    
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">En attente</div>
+        <div class="stat-value" style="color: #FF5A5F;">12</div>
       </div>
-      
-      <form id="login-form">
-        <div class="form-group">
-          <label>Email</label>
-          <input type="text" id="email" placeholder="admin" required>
-        </div>
-        
-        <div class="form-group">
-          <label>Mot de passe</label>
-          <input type="password" id="password" placeholder="••••••••" required>
-        </div>
-        
-        <button type="submit" class="btn btn-primary">
-          Se connecter →
-        </button>
-      </form>
-      
-      <div style="text-align: center; margin-top: 24px; color: var(--gray); font-size: 0.9rem;">
-        <p>Demo: admin / admin</p>
+      <div class="stat">
+        <div class="stat-label">Traitées</div>
+        <div class="stat-value" style="color: #10B981;">48</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Conversion</div>
+        <div class="stat-value" style="color: #F59E0B;">85%</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Revenus</div>
+        <div class="stat-value" style="color: #3B82F6;">12.4k</div>
       </div>
     </div>
+    
+    <!-- Filters -->
+    <div class="filters">
+      <button class="filter active">Tous</button>
+      <button class="filter">En attente</button>
+      <button class="filter">Approuvés</button>
+      <button class="filter">Refusés</button>
+    </div>
+    
+    <!-- Cards -->
+    <div class="card">
+      <div class="card-header">
+        <div class="client">
+          <div class="avatar">MD</div>
+          <div>
+            <div class="client-name">Marie D.</div>
+            <div class="client-event">Anniversaire</div>
+          </div>
+        </div>
+        <div class="score high">92</div>
+      </div>
+      <div class="meta">
+        <span>📅 15 juillet</span>
+        <span>👥 25 pers.</span>
+        <span>💰 900€</span>
+      </div>
+      <div class="preview">Bonjour, je souhaite organiser un anniversaire pour 25 personnes...</div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <div class="client">
+          <div class="avatar">TL</div>
+          <div>
+            <div class="client-name">Thomas L.</div>
+            <div class="client-event">Cousinade</div>
+          </div>
+        </div>
+        <div class="score medium">65</div>
+      </div>
+      <div class="meta">
+        <span>📅 22 août</span>
+        <span>👥 35 pers.</span>
+        <span>💰 1050€</span>
+      </div>
+      <div class="preview">Bonjour, nous sommes une famille de 35 personnes...</div>
+    </div>
   </div>
-
-  <script src="js/auth.js"></script>
+  
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="active">
+      <span>📊</span>
+      Dashboard
+    </a>
+    <a href="demandes.html">
+      <span>📨</span>
+      Demandes
+    </a>
+    <a href="statistiques.html">
+      <span>📈</span>
+      Stats
+    </a>
+    <a href="parametres.html">
+      <span>⚙️</span>
+      Réglages
+    </a>
+  </nav>
+  
+  <script>
+    function toggleMenu() {
+      document.getElementById('nav').classList.toggle('active');
+    }
+    
+    function logout() {
+      localStorage.removeItem('airbnb_agent_auth');
+      window.location.href = 'login.html';
+    }
+    
+    // Fermer le menu quand on clique sur un lien
+    document.querySelectorAll('.nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('nav').classList.remove('active');
+      });
+    });
+  </script>
 </body>
 </html>
