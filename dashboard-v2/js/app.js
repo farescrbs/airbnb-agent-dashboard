@@ -1,20 +1,22 @@
-// Main App Module
+// Main App Module - Simplified
 let currentInquiry = null;
 let currentFilter = 'all';
 
 // Mobile menu toggle
 function toggleMobileMenu() {
   const sidebar = document.querySelector('.sidebar');
-  sidebar.classList.toggle('active');
+  if (sidebar) {
+    sidebar.classList.toggle('active');
+  }
 }
 
-// Close mobile menu when clicking outside
+// Close mobile menu when clicking a link
 document.addEventListener('click', (e) => {
   const sidebar = document.querySelector('.sidebar');
   const menuBtn = document.querySelector('.mobile-menu-btn');
   
   if (sidebar && sidebar.classList.contains('active')) {
-    if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+    if (e.target.closest('.nav-link')) {
       sidebar.classList.remove('active');
     }
   }
@@ -22,13 +24,14 @@ document.addEventListener('click', (e) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   // Check auth
-  if (!window.location.href.includes('index.html')) {
+  if (!window.location.href.includes('index.html') && typeof auth !== 'undefined') {
     auth.checkAuth();
   }
   
   // Load initial data
-  loadStats();
-  loadInquiries();
+  if (typeof loadStats === 'function') loadStats();
+  if (typeof loadInquiries === 'function') loadInquiries();
+  if (typeof loadDemandes === 'function') loadDemandes();
   
   // Setup filters
   setupFilters();
@@ -52,65 +55,59 @@ async function loadStats() {
   if (pendingEl) pendingEl.textContent = stats.pending;
   if (processedEl) processedEl.textContent = stats.processed;
   if (conversionEl) conversionEl.textContent = stats.conversion + '%';
-  if (revenueEl) revenueEl.textContent = (stats.revenue / 1000).toFixed(1) + 'k€';
+  if (revenueEl) revenueEl.textContent = stats.revenue;
 }
 
-// Load inquiries
-async function loadInquiries(filter = 'all') {
-  const list = document.getElementById('inquiries-list');
-  if (!list) return;
+// Load inquiries list
+async function loadInquiries() {
+  const inquiries = await API.getInquiries(currentFilter);
+  const container = document.getElementById('inquiries-list');
   
-  const inquiries = await API.getInquiries(filter);
+  if (!container) return;
   
-  list.innerHTML = inquiries.map(inquiry => `
-    <div class="inquiry-card ${getScoreClass(inquiry.score)}" onclick="openInquiry('${inquiry.id}')">
+  if (inquiries.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:40px;color:var(--gray);">
+        Aucune demande trouvée
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = inquiries.map(inquiry => `
+    <div class="inquiry-card" onclick="openInquiry('${inquiry.id}')">
       <div class="inquiry-header">
-        <div class="inquiry-client">
+        <div class="client-info">
           <div class="client-avatar">${inquiry.client.initials}</div>
-          <div class="client-info">
-            <h4>${inquiry.client.name}</h4>
-            <span>${inquiry.event}</span>
+          <div>
+            <div class="client-name">${inquiry.client.name}</div>
+            <div class="client-event">${inquiry.event}</div>
           </div>
         </div>
-        <div class="inquiry-score ${getScoreClass(inquiry.score)}">
-          ${inquiry.score}/100
+        <div class="score ${inquiry.qualification.score >= 70 ? 'high' : inquiry.qualification.score >= 40 ? 'medium' : 'low'}">
+          ${inquiry.qualification.score}
         </div>
       </div>
-      <div class="inquiry-details">
-        <span>👥 ${inquiry.guests} personnes</span>
+      <div class="inquiry-meta">
         <span>📅 ${inquiry.date}</span>
-        <span>${getStatusBadge(inquiry.status)}</span>
+        <span>👥 ${inquiry.guests} pers.</span>
+        <span>💰 ${inquiry.price}€</span>
       </div>
+      <div class="inquiry-preview">${inquiry.message}</div>
     </div>
   `).join('');
 }
 
-// Get score class
-function getScoreClass(score) {
-  if (score >= 80) return 'high-score';
-  if (score >= 50) return 'medium-score';
-  return 'low-score';
-}
-
-// Get status badge
-function getStatusBadge(status) {
-  const badges = {
-    pending: '⏳ En attente',
-    approved: '✅ Approuvé',
-    rejected: '❌ Refusé'
-  };
-  return badges[status] || status;
-}
-
 // Setup filters
 function setupFilters() {
-  const tabs = document.querySelectorAll('.filter-tab');
-  tabs.forEach(tab => {
+  document.querySelectorAll('.filter-tab').forEach(tab => {
     tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       currentFilter = tab.dataset.filter;
-      loadInquiries(currentFilter);
+      
+      if (typeof loadInquiries === 'function') loadInquiries();
+      if (typeof loadDemandes === 'function') loadDemandes();
     });
   });
 }
@@ -118,119 +115,108 @@ function setupFilters() {
 // Handle search
 function handleSearch(e) {
   const query = e.target.value.toLowerCase();
-  const cards = document.querySelectorAll('.inquiry-card');
-  
-  cards.forEach(card => {
-    const text = card.textContent.toLowerCase();
-    card.style.display = text.includes(query) ? 'block' : 'none';
-  });
+  // Implement search logic
 }
 
 // Open inquiry modal
 async function openInquiry(id) {
-  currentInquiry = await API.getInquiry(id);
+  const inquiries = await API.getInquiries();
+  currentInquiry = inquiries.find(i => i.id === id);
+  
   if (!currentInquiry) return;
   
-  const modal = document.getElementById('modal');
-  const body = document.getElementById('modal-body');
+  const modalBody = document.getElementById('modal-body');
+  if (!modalBody) return;
   
-  body.innerHTML = `
-    <div class="detail-grid">
-      <div class="detail-item">
-        <label>Client</label>
-        <value>${currentInquiry.client.name}</value>
-      </div>
-      <div class="detail-item">
-        <label>Événement</label>
-        <value>${currentInquiry.event}</value>
-      </div>
-      <div class="detail-item">
-        <label>Score</label>
-        <value style="color: ${currentInquiry.score >= 80 ? 'var(--success)' : currentInquiry.score >= 50 ? 'var(--warning)' : 'var(--danger)'}">${currentInquiry.score}/100</value>
-      </div>
-      <div class="detail-item">
-        <label>Personnes</label>
-        <value>${currentInquiry.guests}</value>
-      </div>
-      <div class="detail-item">
-        <label>Date</label>
-        <value>${currentInquiry.date}</value>
-      </div>
-      <div class="detail-item">
-        <label>Prix</label>
-        <value>${currentInquiry.price ? currentInquiry.price + '€' : 'N/A'}</value>
+  modalBody.innerHTML = `
+    <div class="client-info" style="margin-bottom:20px;">
+      <div class="client-avatar" style="width:60px;height:60px;font-size:1.2rem;">${currentInquiry.client.initials}</div>
+      <div>
+        <div class="client-name" style="font-size:1.2rem;">${currentInquiry.client.name}</div>
+        <div class="client-event">${currentInquiry.event}</div>
       </div>
     </div>
-    
-    <div class="message-box">
-      <label>Message du client</label>
-      <div class="message-content">${currentInquiry.message}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+      <div style="background:var(--dark);padding:12px;border-radius:10px;">
+        <div style="font-size:0.85rem;color:var(--gray);">Date</div>
+        <div>${currentInquiry.date}</div>
+      </div>
+      <div style="background:var(--dark);padding:12px;border-radius:10px;">
+        <div style="font-size:0.85rem;color:var(--gray);">Personnes</div>
+        <div>${currentInquiry.guests}</div>
+      </div>
+      <div style="background:var(--dark);padding:12px;border-radius:10px;">
+        <div style="font-size:0.85rem;color:var(--gray);">Prix</div>
+        <div>${currentInquiry.price}€</div>
+      </div>
+      <div style="background:var(--dark);padding:12px;border-radius:10px;">
+        <div style="font-size:0.85rem;color:var(--gray);">Score</div>
+        <div>${currentInquiry.qualification.score}/100</div>
+      </div>
     </div>
-    
-    <div class="response-box">
-      <label>Réponse proposée par l'agent</label>
-      <div class="response-content" id="response-text">${currentInquiry.response}</div>
+    <div style="margin-bottom:20px;">
+      <div style="font-size:0.85rem;color:var(--gray);margin-bottom:8px;">Message</div>
+      <div style="background:var(--dark);padding:16px;border-radius:10px;line-height:1.6;">${currentInquiry.message}</div>
+    </div>
+    <div>
+      <div style="font-size:0.85rem;color:var(--gray);margin-bottom:8px;">Réponse générée</div>
+      <div style="background:var(--dark);padding:16px;border-radius:10px;line-height:1.6;white-space:pre-wrap;">${currentInquiry.response}</div>
     </div>
   `;
   
-  modal.classList.add('active');
+  const modal = document.getElementById('modal');
+  if (modal) modal.classList.add('active');
 }
 
 // Close modal
 function closeModal() {
-  document.getElementById('modal').classList.remove('active');
+  const modal = document.getElementById('modal');
+  if (modal) modal.classList.remove('active');
   currentInquiry = null;
-}
-
-// Edit response
-function editResponse() {
-  if (!currentInquiry) return;
-  
-  const newResponse = prompt('Modifier la réponse :', currentInquiry.response);
-  if (newResponse !== null) {
-    API.updateResponse(currentInquiry.id, newResponse);
-    document.getElementById('response-text').textContent = newResponse;
-  }
 }
 
 // Approve inquiry
 async function approveInquiry() {
   if (!currentInquiry) return;
-  
-  await API.updateStatus(currentInquiry.id, 'approved');
+  await API.updateInquiryStatus(currentInquiry.id, 'approved');
   closeModal();
-  loadInquiries(currentFilter);
-  loadStats();
-  alert('✅ Demande approuvée et réponse envoyée !');
+  loadInquiries();
+  showNotification('Demande approuvée ✅');
 }
 
 // Reject inquiry
 async function rejectInquiry() {
   if (!currentInquiry) return;
-  
-  if (confirm('Êtes-vous sûr de vouloir refuser cette demande ?')) {
-    await API.updateStatus(currentInquiry.id, 'rejected');
-    closeModal();
-    loadInquiries(currentFilter);
-    loadStats();
-    alert('❌ Demande refusée.');
+  await API.updateInquiryStatus(currentInquiry.id, 'rejected');
+  closeModal();
+  loadInquiries();
+  showNotification('Demande refusée ❌');
+}
+
+// Edit response
+function editResponse() {
+  if (!currentInquiry) return;
+  const newResponse = prompt('Modifier la réponse:', currentInquiry.response);
+  if (newResponse) {
+    currentInquiry.response = newResponse;
+    openInquiry(currentInquiry.id);
   }
 }
 
-// Debounce helper
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
+// Show notification
+function showNotification(message) {
+  const notif = document.createElement('div');
+  notif.className = 'notification';
+  notif.textContent = message;
+  document.body.appendChild(notif);
+  setTimeout(() => notif.remove(), 3000);
 }
 
-// Close modal on outside click
-document.getElementById('modal')?.addEventListener('click', (e) => {
-  if (e.target.id === 'modal') closeModal();
-});
+// Debounce helper
+function debounce(fn, ms) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), ms);
+  };
+}
