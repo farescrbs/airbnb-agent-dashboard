@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres — Airbnb Agent Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">🤖 Agent Pro</div>
+      
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <span>📊</span> Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="demandes.html" class="nav-link">
+            <span>📨</span> Demandes
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="statistiques.html" class="nav-link">
+            <span>📈</span> Statistiques
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="parametres.html" class="nav-link active">
+            <span>⚙️</span> Paramètres
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">A</div>
+          <div>
+            <div class="user-name">Admin</div>
+            <div class="user-role">Propriétaire</div>
+          </div>
+        </div>
+        <button onclick="auth.logout()" style="background:none;border:none;color:var(--gray);cursor:pointer;margin-top:8px;font-size:0.8rem;">Déconnexion</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <div class="header">
+        <h2>Paramètres</h2>
+      </div>
+
+      <!-- Settings Tabs -->
+      <div class="settings-tabs">
+        <button class="settings-tab active" data-tab="property">🏠 Propriété</button>
+        <button class="settings-tab" data-tab="pricing">💰 Tarification</button>
+        <button class="settings-tab" data-tab="responses">✉️ Réponses</button>
+        <button class="settings-tab" data-tab="notifications">🔔 Notifications</button>
+        <button class="settings-tab" data-tab="account">👤 Compte</button>
+      </div>
+
+      <!-- Property Settings -->
+      <div class="settings-panel active" id="panel-property">
+        <div class="settings-card">
+          <h3>Informations de la propriété</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nom de la propriété</label>
+              <input type="text" id="prop-name" value="L'Extérieur de Verfeil">
+            </div>
+            <div class="form-group">
+              <label>Localisation</label>
+              <input type="text" id="prop-location" value="Verfeil">
+            </div>
+            <div class="form-group">
+              <label>Capacité maximum</label>
+              <input type="number" id="prop-capacity" value="40">
+            </div>
+            <div class="form-group">
+              <label>Type</label>
+              <select id="prop-type">
+                <option value="outdoor_only" selected>Extérieur uniquement</option>
+                <option value="indoor_outdoor">Intérieur + Extérieur</option>
+              </select>
+            </div>
+          </div>
+          
+          <h4 style="margin-top:24px;">Équipements inclus</h4>
+          <div class="checkbox-grid">
+            <label class="checkbox-item"><input type="checkbox" checked> Tables et chaises</label>
+            <label class="checkbox-item"><input type="checkbox" checked> BBQ</label>
+            <label class="checkbox-item"><input type="checkbox" checked> 2 frigos</label>
+            <label class="checkbox-item"><input type="checkbox" checked> Plaque à gaz</label>
+            <label class="checkbox-item"><input type="checkbox" checked> Évier</label>
+            <label class="checkbox-item"><input type="checkbox" checked> Eau</label>
+            <label class="checkbox-item"><input type="checkbox" checked> Électricité</label>
+            <label class="checkbox-item"><input type="checkbox"> Wifi</label>
+          </div>
+          
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="saveProperty()">💾 Enregistrer</button>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <h3>Horaires</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Heure d'accès</label>
+              <input type="time" id="hours-start" value="10:00">
+            </div>
+            <div class="form-group">
+              <label>Heure de départ</label>
+              <input type="time" id="hours-end" value="00:00">
+            </div>
+            <div class="form-group">
+              <label>Musique autorisée jusqu'à</label>
+              <input type="time" id="hours-music" value="23:00">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="saveHours()">💾 Enregistrer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing Settings -->
+      <div class="settings-panel" id="panel-pricing">
+        <div class="settings-card">
+          <h3>Tarification</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Tarif de base (journée)</label>
+              <input type="number" id="price-base" value="900">
+            </div>
+            <div class="form-group">
+              <label>Devise</label>
+              <select id="price-currency">
+                <option value="EUR" selected>€ EUR</option>
+                <option value="USD">$ USD</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Seuil groupe nombreux</label>
+              <input type="number" id="price-threshold" value="30">
+            </div>
+            <div class="form-group">
+              <label>Surcharge groupe nombreux</label>
+              <input type="number" id="price-surcharge" value="150">
+            </div>
+            <div class="form-group">
+              <label>Surcharge week-end</label>
+              <input type="number" id="price-weekend" value="100">
+            </div>
+            <div class="form-group">
+              <label>Retenue de garantie (%)</label>
+              <input type="number" id="price-deposit" value="30">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="savePricing()">💾 Enregistrer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Response Settings -->
+      <div class="settings-panel" id="panel-responses">
+        <div class="settings-card">
+          <h3>Templates de réponse</h3>
+          <div class="template-list">
+            <div class="template-item">
+              <span>Réponse standard positive</span>
+              <button class="btn btn-secondary" onclick="editTemplate('standard')">✏️ Modifier</button>
+            </div>
+            <div class="template-item">
+              <span>Clarification couchage</span>
+              <button class="btn btn-secondary" onclick="editTemplate('sleeping')">✏️ Modifier</button>
+            </div>
+            <div class="template-item">
+              <span>Événement spécial</span>
+              <button class="btn btn-secondary" onclick="editTemplate('special')">✏️ Modifier</button>
+            </div>
+            <div class="template-item">
+              <span>Refus capacité dépassée</span>
+              <button class="btn btn-secondary" onclick="editTemplate('capacity')">✏️ Modifier</button>
+            </div>
+            <div class="template-item">
+              <span>Proposition visite</span>
+              <button class="btn btn-secondary" onclick="editTemplate('visit')">✏️ Modifier</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="settings-card">
+          <h3>Mode de réponse</h3>
+          <div class="form-group">
+            <label class="toggle-label">
+              <input type="checkbox" id="auto-respond">
+              <span class="toggle"></span>
+              Réponse automatique (mode full auto)
+            </label>
+            <p class="help-text">Si activé, les demandes avec un score > 80 seront approuvées automatiquement</p>
+          </div>
+          <div class="form-group">
+            <label>Seuil de confiance pour auto-réponse</label>
+            <input type="range" id="auto-threshold" min="50" max="100" value="80">
+            <span id="threshold-value">80</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notifications Settings -->
+      <div class="settings-panel" id="panel-notifications">
+        <div class="settings-card">
+          <h3>Notifications Telegram</h3>
+          <div class="form-group">
+            <label class="toggle-label">
+              <input type="checkbox" id="telegram-enabled" checked>
+              <span class="toggle"></span>
+              Activer les notifications Telegram
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Chat ID Telegram</label>
+            <input type="text" id="telegram-chatid" value="706516296">
+          </div>
+          <div class="form-group">
+            <label>Bot Token (optionnel)</label>
+            <input type="password" id="telegram-token" placeholder="••••••••">
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-secondary" onclick="testTelegram()">🧪 Tester</button>
+            <button class="btn btn-primary" onclick="saveNotifications()">💾 Enregistrer</button>
+          </div>
+        </div>
+        
+        <div class="settings-card">
+          <h3>Alertes email</h3>
+          <div class="checkbox-list">
+            <label class="checkbox-item"><input type="checkbox" checked> Nouvelle demande reçue</label>
+            <label class="checkbox-item"><input type="checkbox" checked> Demande approuvée</label>
+            <label class="checkbox-item"><input type="checkbox"> Demande refusée</label>
+            <label class="checkbox-item"><input type="checkbox" checked> Visite programmée</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Settings -->
+      <div class="settings-panel" id="panel-account">
+        <div class="settings-card">
+          <h3>Changer le mot de passe</h3>
+          <div class="form-group">
+            <label>Mot de passe actuel</label>
+            <input type="password" id="current-password">
+          </div>
+          <div class="form-group">
+            <label>Nouveau mot de passe</label>
+            <input type="password" id="new-password">
+          </div>
+          <div class="form-group">
+            <label>Confirmer le nouveau mot de passe</label>
+            <input type="password" id="confirm-password">
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="changePassword()">🔒 Changer</button>
+          </div>
+        </div>
+        
+        <div class="settings-card danger-zone">
+          <h3>⚠️ Zone dangereuse</h3>
+          <div class="danger-item">
+            <div>
+              <strong>Réinitialiser toutes les données</strong>
+              <p>Supprime toutes les demandes et statistiques</p>
+            </div>
+            <button class="btn btn-danger" onclick="resetData()">🗑️ Réinitialiser</button>
+          </div>
+          <div class="danger-item">
+            <div>
+              <strong>Exporter les données</strong>
+              <p>Télécharge une sauvegarde de toutes les données</p>
+            </div>
+            <button class="btn btn-secondary" onclick="exportAllData()">📥 Exporter</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/parametres.js"></script>
+</body>
+</html>

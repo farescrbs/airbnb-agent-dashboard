@@ -1,0 +1,59 @@
+{
+  "property": {
+    "name": "Votre Propriété",
+    "type": "outdoor_only",
+    "location": "Votre Ville",
+    "max_capacity": 40,
+    "has_sleeping": false
+  },
+  "pricing": {
+    "base_day_rate": 900,
+    "currency": "EUR",
+    "variable_pricing": true,
+    "weekend_surcharge": 100,
+    "large_group_surcharge": 150,
+    "large_group_threshold": 30
+  },
+  "hours": {
+    "start": "10:00",
+    "end": "00:00",
+    "flexible": true
+  },
+  "equipment": [
+    "Tables et chaises",
+    "BBQ",
+    "2 frigos",
+    "Plaque à gaz",
+    "Évier",
+    "Eau",
+    "Vaisselle complète"
+  ],
+  "policies": {
+    "music_allowed": true,
+    "music_end_time": "23:00",
+    "music_restrictions": "Musique autorisée jusqu'à 23h",
+    "cleaning_required": true,
+    "deposit_required": false,
+    "visits_allowed": true
+  },
+  "ideal_events": [
+    "anniversaire",
+    "baby_shower",
+    "cousinade",
+    "retrouvailles",
+    "repas_famille",
+    "evg",
+    "evjf",
+    "entreprise",
+    "team_building",
+    "seminaire"
+  ],
+  "events_to_evaluate": [
+    "mariage"
+  ],
+  "response_tone": "friendly_professional",
+  "auto_respond": true,
+  "approval_required": true,
+  "confidence_threshold": 80,
+  "mode": "semi_auto"
+}

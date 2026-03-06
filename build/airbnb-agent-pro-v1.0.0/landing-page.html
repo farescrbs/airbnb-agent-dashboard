@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airbnb Agent Pro — Automatisez vos réponses</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #FF5A5F;
+      --primary-dark: #E04A4F;
+      --dark: #1a1a2e;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --success: #10B981;
+      --gradient: linear-gradient(135deg, #FF5A5F 0%, #ff7675 100%);
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: var(--dark);
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    
+    /* Hero */
+    .hero {
+      background: var(--gradient);
+      color: white;
+      padding: 100px 0 80px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    .hero p {
+      font-size: 1.4rem;
+      opacity: 0.95;
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+    .cta-button {
+      display: inline-block;
+      background: white;
+      color: var(--primary);
+      padding: 18px 40px;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+    
+    /* Stats Bar */
+    .stats-bar {
+      background: white;
+      padding: 40px 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-top: -40px;
+      position: relative;
+      z-index: 10;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .stat-label {
+      color: var(--gray);
+      font-size: 0.95rem;
+      margin-top: 5px;
+    }
+    
+    /* Features */
+    .features {
+      padding: 100px 0;
+      background: var(--light);
+    }
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 60px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+    .feature-card {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      transition: transform 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--gradient);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+    .feature-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+    .feature-card p {
+      color: var(--gray);
+      line-height: 1.7;
+    }
+    
+    /* How it Works */
+    .how-it-works {
+      padding: 100px 0;
+    }
+    .steps {
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+      margin-top: 60px;
+    }
+    .step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+    .step-number {
+      width: 60px;
+      height: 60px;
+      background: var(--gradient);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 auto 20px;
+    }
+    .step h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    .step p {
+      color: var(--gray);
+    }
+    .step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -30px;
+      top: 15px;
+      font-size: 2rem;
+      color: var(--primary);
+      opacity: 0.5;
+    }
+    
+    /* Dashboard Preview */
+    .preview {
+      padding: 100px 0;
+      background: var(--dark);
+      color: white;
+    }
+    .preview-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .preview-text h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .preview-text p {
+      opacity: 0.8;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+    .preview-list {
+      list-style: none;
+    }
+    .preview-list li {
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .preview-list li::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: 700;
+    }
+    .dashboard-mockup {
+      background: #2d2d44;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    }
+    .mockup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #3d3d5c;
+    }
+    .mockup-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .mockup-stat {
+      background: #3d3d5c;
+      padding: 20px;
+      border-radius: 12px;
+    }
+    .mockup-stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .mockup-stat-label {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      margin-top: 5px;
+    }
+    .mockup-card {
+      background: #3d3d5c;
+      padding: 20px;
+      border-radius: 12px;
+      border-left: 4px solid var(--success);
+      margin-bottom: 10px;
+    }
+    
+    /* Pricing */
+    .pricing {
+      padding: 100px 0;
+      background: var(--light);
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .pricing-card {
+      background: white;
+      padding: 50px 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      position: relative;
+    }
+    .pricing-card.featured {
+      border: 3px solid var(--primary);
+      transform: scale(1.05);
+    }
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gradient);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .pricing-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .price {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 20px 0;
+    }
+    .price span {
+      font-size: 1rem;
+      color: var(--gray);
+      font-weight: 400;
+    }
+    .pricing-features {
+      list-style: none;
+      margin: 30px 0;
+    }
+    .pricing-features li {
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: 700;
+    }
+    .pricing-button {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: var(--gradient);
+      color: white;
+      text-align: center;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.3s;
+    }
+    .pricing-button:hover {
+      opacity: 0.9;
+    }
+    
+    /* CTA Section */
+    .cta-section {
+      padding: 100px 0;
+      text-align: center;
+      background: var(--gradient);
+      color: white;
+    }
+    .cta-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .cta-section p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 40px;
+    }
+    
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      text-align: center;
+      color: var(--gray);
+      border-top: 1px solid #eee;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.2rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps { flex-direction: column; }
+      .step:not(:last-child)::after { display: none; }
+      .preview-content { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .pricing-card.featured { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>🤖 Airbnb Agent Pro</h1>
+      <p>L'agent IA qui qualifie et répond à vos demandes Airbnb automatiquement. Gagnez 10h par semaine, convertissez plus.</p>
+      <a href="#pricing" class="cta-button">Voir les offres →</a>
+    </div>
+  </section>
+  
+  <!-- Stats Bar -->
+  <section class="stats-bar">
+    <div class="container">
+      <div class="stats-grid">
+        <div>
+          <div class="stat-number">10h</div>
+          <div class="stat-label">économisées/semaine</div>
+        </div>
+        <div>
+          <div class="stat-number">&lt;5min</div>
+          <div class="stat-label">temps de réponse</div>
+        </div>
+        <div>
+          <div class="stat-number">+30%</div>
+          <div class="stat-label">taux de conversion</div>
+        </div>
+        <div>
+          <div class="stat-number">80%+</div>
+          <div class="stat-label">auto-qualifiés</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Features -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">Ce que fait l'agent</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🧠</div>
+          <h3>Qualification Intelligente</h3>
+          <p>Extraction automatique des dates, nombre de personnes et type d'événement. Scoring 0-100 basé sur 15+ critères.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Mode Semi-Automatique</h3>
+          <p>Les demandes parfaites (score ≥80%) sont répondues instantanément. Les cas limites attendent votre validation.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Notifications Mobile</h3>
+          <p>Alertes Telegram avec résumé client, score et boutons Valider/Rejeter. Gérez tout depuis votre téléphone.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Dashboard Analytics</h3>
+          <p>Stats en temps réel, graphiques d'activité, historique complet. Suivez vos performances de conversion.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Détection Red Flags</h3>
+          <p>Identifie automatiquement les mauvais fits : capacité dépassée, événements problématiques, price shoppers.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔧</div>
+          <h3>100% Personnalisable</h3>
+          <p>Templates éditables, règles de scoring ajustables, multi-biens supporté. Adaptez l'agent à votre business.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- How it Works -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2 class="section-title">Comment ça marche</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Connexion Email</h3>
+          <p>L'agent surveille votre boîte de réception et détecte les nouvelles demandes instantanément.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Analyse & Scoring</h3>
+          <p>Extraction des infos clés et calcul du score basé sur votre configuration (capacité, tarifs, règles).</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Réponse Auto</h3>
+          <p>Les leads HOT reçoivent une réponse personnalisée instantanément. Les autres attendent votre validation.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Suivi & Stats</h3>
+          <p>Dashboard complet et notifications mobile pour suivre vos conversions et ajuster vos stratégies.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Dashboard Preview -->
+  <section class="preview">
+    <div class="container">
+      <div class="preview-content">
+        <div class="preview-text">
+          <h2>Un dashboard qui vous donne le contrôle</h2>
+          <p>Visualisez toutes vos demandes en un coup d'œil. Validez, modifiez ou rejetez en quelques clics. Dark mode inclus pour les soirées de travail.</p>
+          <ul class="preview-list">
+            <li>Stats en temps réel</li>
+            <li>Scoring visuel (vert/orange/rouge)</li>
+            <li>Édition des réponses</li>
+            <li>Historique complet</li>
+            <li>Export des données</li>
+          </ul>
+        </div>
+        <div class="dashboard-mockup">
+          <div class="mockup-header">
+            <strong>🤖 Airbnb Agent Pro</strong>
+            <span>🌙</span>
+          </div>
+          <div class="mockup-stats">
+            <div class="mockup-stat">
+              <div class="mockup-stat-value">12</div>
+              <div class="mockup-stat-label">En attente</div>
+            </div>
+            <div class="mockup-stat">
+              <div class="mockup-stat-value">48</div>
+              <div class="mockup-stat-label">Traités</div>
+            </div>
+          </div>
+          <div class="mockup-card">
+            <strong>Marie</strong> — Anniversaire<br>
+            <small>25 pers • Score: 85/100 ✅</small>
+          </div>
+          <div class="mockup-card" style="border-left-color: #F59E0B;">
+            <strong>Thomas</strong> — Cousinade<br>
+            <small>35 pers • Score: 60/100 ⚠️</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Pricing -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <h2 class="section-title">Choisissez votre package</h2>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <h3>Standard</h3>
+          <div class="price">€XXX<span>/one-time</span></div>
+          <ul class="pricing-features">
+            <li>Code source complet</li>
+            <li>Dashboard web</li>
+            <li>Intégration Telegram</li>
+            <li>Documentation setup</li>
+            <li>1 mois de support</li>
+          </ul>
+          <a href="#contact" class="pricing-button">Choisir Standard</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-badge">RECOMMANDÉ</div>
+          <h3>Pro</h3>
+          <div class="price">€XXX<span>/one-time</span></div>
+          <ul class="pricing-features">
+            <li>Tout le package Standard</li>
+            <li>Setup personnalisé sur votre VPS</li>
+            <li>Configuration sur mesure</li>
+            <li>Templates de réponse custom</li>
+            <li>3 mois de support + updates</li>
+            <li>Formation 1h en visio</li>
+          </ul>
+          <a href="#contact" class="pricing-button">Choisir Pro</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="cta-section" id="contact">
+    <div class="container">
+      <h2>Prêt à automatiser ?</h2>
+      <p>Discutons de votre projet et voyons comment l'agent peut vous faire gagner du temps.</p>
+      <a href="mailto:contact@exemple.com" class="cta-button">Me contacter →</a>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 Airbnb Agent Pro — Construit avec ❤️ pour les hôtes qui veulent scaler.</p>
+    </div>
+  </footer>
+</body>
+</html>

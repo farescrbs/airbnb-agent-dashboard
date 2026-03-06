@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vidéo — Airbnb Agent Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FF5A5F;
+      --dark: #0a0a0f;
+      --dark-light: #15151f;
+      --gray: #8b8b9e;
+      --gradient: linear-gradient(135deg, #FF5A5F 0%, #ff6b8a 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--dark); color: white; }
+    .vsl-container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+    .vsl-header { text-align: center; margin-bottom: 40px; }
+    .vsl-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,90,95,0.1); border: 1px solid rgba(255,90,95,0.3); padding: 8px 16px; border-radius: 50px; font-size: 0.85rem; color: var(--primary); margin-bottom: 20px; }
+    .vsl-header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 16px; }
+    .vsl-header p { color: var(--gray); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+    .video-wrapper { position: relative; padding-bottom: 56.25%; background: var(--dark-light); border-radius: 20px; overflow: hidden; margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.1); }
+    .video-placeholder { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+    .play-button { width: 100px; height: 100px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 20px; box-shadow: 0 20px 60px rgba(255,90,95,0.4); transition: transform 0.3s; }
+    .video-placeholder:hover .play-button { transform: scale(1.1); }
+    .video-duration { color: var(--gray); font-size: 0.9rem; }
+    .vsl-cta { text-align: center; }
+    .btn-cta { display: inline-flex; align-items: center; gap: 12px; background: var(--gradient); color: white; padding: 20px 48px; border-radius: 50px; text-decoration: none; font-size: 1.2rem; font-weight: 600; box-shadow: 0 10px 40px rgba(255,90,95,0.4); transition: transform 0.3s; }
+    .btn-cta:hover { transform: translateY(-3px); }
+    .urgency { margin-top: 20px; color: var(--gray); font-size: 0.9rem; }
+    .urgency span { color: #ef4444; font-weight: 600; }
+    .bullet-points { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+    .bullet-point { text-align: center; padding: 24px; }
+    .bullet-icon { font-size: 2rem; margin-bottom: 12px; }
+    .bullet-title { font-weight: 600; margin-bottom: 8px; }
+    .bullet-desc { color: var(--gray); font-size: 0.9rem; }
+    @media (max-width: 768px) {
+      .bullet-points { grid-template-columns: 1fr; }
+      .vsl-header h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="vsl-container">
+    <div class="vsl-header">
+      <div class="vsl-badge">🔥 Regardé par 1,247 hôtes ce mois-ci</div>
+      <h1>Comment j'ai gagné 10h par semaine avec un agent IA</h1>
+      <p>Découvrez comment automatiser vos réponses Airbnb en 4 minutes</p>
+    </div>
+    
+    <div class="video-wrapper">
+      <div class="video-placeholder" onclick="playVideo()">
+        <div class="play-button">▶</div>
+        <div class="video-duration">▶ Regarder la vidéo (4:32)</div>
+      </div>
+    </div>
+    
+    <div class="vsl-cta">
+      <a href="checkout.html" class="btn-cta">Oui, je veux automatiser mes réponses →</a>
+      <p class="urgency">⏰ <span>Offre limitée</span> — Prix de lancement jusqu'à dimanche minuit uniquement</p>
+    </div>
+    
+    <div class="bullet-points">
+      <div class="bullet-point">
+        <div class="bullet-icon">⚡</div>
+        <div class="bullet-title">Réponse instantanée</div>
+        <div class="bullet-desc">Moins de 5 minutes vs 4h en moyenne</div>
+      </div>
+      <div class="bullet-point">
+        <div class="bullet-icon">🎯</div>
+        <div class="bullet-title">Qualification auto</div>
+        <div class="bullet-desc">Le score détecte les bons leads</div>
+      </div>
+      <div class="bullet-point">
+        <div class="bullet-icon">📱</div>
+        <div class="bullet-title">Mobile first</div>
+        <div class="bullet-desc">Validez depuis Telegram</div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function playVideo() {
+      alert('🎬 Ici intégrer votre vidéo Vimeo/YouTube:\n<iframe src="https://player.vimeo.com/video/XXXXX"...');
+    }
+  </script>
+</body>
+</html>

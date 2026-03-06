@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion — Airbnb Agent Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-box">
+      <div class="login-logo">
+        <h1>🤖 Airbnb Agent Pro</h1>
+        <p>Connectez-vous pour gérer vos demandes</p>
+      </div>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="text" id="email" placeholder="admin" required>
+        </div>
+        
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+          Se connecter →
+        </button>
+      </form>
+      
+      <div style="text-align: center; margin-top: 24px; color: var(--gray); font-size: 0.9rem;">
+        <p>Demo: admin / admin</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>
