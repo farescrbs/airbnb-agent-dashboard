@@ -2,92 +2,88 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>HostFlow — Demandes</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     :root {
-      --bg-primary: #0d0d0f;
-      --bg-secondary: #151518;
-      --bg-tertiary: #1c1c21;
-      --bg-elevated: #232329;
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #121216;
+      --bg-tertiary: #1a1a1f;
+      --bg-elevated: #222228;
       --bg-hover: #2a2a32;
-      --accent-start: #3b82f6;
-      --accent-end: #06b6d4;
-      --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+      --accent: #3b82f6;
+      --accent-light: #60a5fa;
       --success: #10b981;
       --warning: #f59e0b;
       --danger: #ef4444;
-      --info: #6366f1;
       --text-primary: #fafafa;
       --text-secondary: #a1a1aa;
       --text-tertiary: #71717a;
-      --text-muted: #52525b;
-      --border-subtle: rgba(255, 255, 255, 0.06);
-      --border-default: rgba(255, 255, 255, 0.1);
+      --border: rgba(255, 255, 255, 0.08);
       --border-hover: rgba(255, 255, 255, 0.15);
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 14px;
-      --radius-xl: 20px;
-      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
-    body { background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; overflow-x: hidden; }
-    .ambient-bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.15), transparent), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(6, 182, 212, 0.08), transparent); pointer-events: none; z-index: 0; }
-    .noise { position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.03; pointer-events: none; z-index: 1; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
-    .app { display: flex; min-height: 100vh; position: relative; z-index: 2; }
-    .sidebar { width: 260px; background: var(--bg-secondary); border-right: 1px solid var(--border-subtle); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; transition: transform var(--transition-base); }
-    .sidebar-header { padding: 24px; border-bottom: 1px solid var(--border-subtle); }
+    html { font-family: 'Inter', -apple-system, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    body { background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
+    .app { display: flex; min-height: 100vh; }
+    
+    /* Sidebar */
+    .sidebar { width: 260px; background: var(--bg-secondary); border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0; display: flex; flex-direction: column; z-index: 100; transition: transform 0.3s ease; }
+    .sidebar-header { padding: 20px; border-bottom: 1px solid var(--border); }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .brand-icon { width: 36px; height: 36px; background: var(--accent-gradient); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
-    .brand-text { font-size: 18px; font-weight: 700; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .nav { flex: 1; padding: 12px; overflow-y: auto; }
-    .nav-section { margin-bottom: 16px; }
+    .brand-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #3b82f6, #06b6d4); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .brand-text { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+    .nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
     .nav-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); padding: 8px 12px; margin-bottom: 4px; }
-    .nav-item { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: var(--radius-md); color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: all var(--transition-fast); margin-bottom: 4px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.15s; cursor: pointer; }
     .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
-    .nav-item.active { background: var(--bg-elevated); color: var(--text-primary); box-shadow: inset 0 1px 0 var(--border-default); }
+    .nav-item.active { background: var(--bg-elevated); color: var(--text-primary); }
     .nav-item span:first-child { font-size: 18px; width: 24px; text-align: center; }
-    .badge { margin-left: auto; background: var(--danger); color: white; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; }
-    .main { flex: 1; margin-left: 260px; padding: 32px 40px; max-width: 1400px; }
-    .page-header { margin-bottom: 32px; }
-    .page-title { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
-    .page-subtitle { font-size: 16px; color: var(--text-secondary); }
-    .filters { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
-    .filter-chip { padding: 8px 16px; background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: 9999px; color: var(--text-secondary); font-size: 14px; font-weight: 500; cursor: pointer; transition: all var(--transition-fast); }
+    .badge { margin-left: auto; background: var(--danger); color: white; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; }
+    
+    /* Main */
+    .main { flex: 1; margin-left: 260px; padding: 24px 32px; max-width: 1400px; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+    .page-title { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+    .mobile-menu-btn { display: none; width: 40px; height: 40px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 20px; cursor: pointer; align-items: center; justify-content: center; }
+    
+    /* Filters */
+    .filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .filter-chip { padding: 8px 16px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 999px; color: var(--text-secondary); font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
     .filter-chip:hover { border-color: var(--border-hover); color: var(--text-primary); }
-    .filter-chip.active { background: var(--accent-gradient); color: white; border-color: transparent; }
-    .section { background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl); overflow: hidden; }
-    .section-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border-subtle); }
+    .filter-chip.active { background: var(--accent); color: white; border-color: var(--accent); }
+    
+    /* Section */
+    .section { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 12px; }
     .section-title { font-size: 16px; font-weight: 600; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 16px; border-radius: var(--radius-md); font-size: 14px; font-weight: 500; cursor: pointer; transition: all var(--transition-fast); border: none; text-decoration: none; }
-    .btn-primary { background: var(--accent-gradient); color: white; box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
-    .btn-primary:hover { box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); transform: translateY(-1px); }
-    .btn-secondary { background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-default); }
-    .btn-secondary:hover { background: var(--bg-hover); border-color: var(--border-hover); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: var(--accent-light); }
+    .btn-secondary { background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--border-hover); }
     .btn-success { background: var(--success); color: white; }
     .btn-danger { background: var(--danger); color: white; }
-    .table-container { overflow-x: auto; }
+    .btn-sm { padding: 6px 12px; font-size: 13px; }
+    
+    /* Table */
+    .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table { width: 100%; border-collapse: collapse; }
-    th { text-align: left; padding: 12px 24px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); border-bottom: 1px solid var(--border-subtle); }
-    td { padding: 16px 24px; border-bottom: 1px solid var(--border-subtle); font-size: 14px; }
+    th { text-align: left; padding: 12px 24px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: 16px 24px; border-bottom: 1px solid var(--border); font-size: 14px; }
     tr:hover td { background: var(--bg-tertiary); }
+    tr:last-child td { border-bottom: none; }
     .client-cell { display: flex; align-items: center; gap: 12px; }
-    .client-avatar { width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; }
-    .client-info h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
-    .client-info p { font-size: 13px; color: var(--text-tertiary); }
-    .score { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: var(--radius-md); font-size: 13px; font-weight: 700; }
+    .avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6, #06b6d4); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; flex-shrink: 0; }
+    .client-name { font-weight: 600; }
+    .client-meta { font-size: 13px; color: var(--text-tertiary); }
+    .score { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; font-size: 13px; font-weight: 700; }
     .score-high { background: rgba(16, 185, 129, 0.15); color: var(--success); }
     .score-medium { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
     .score-low { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
-    .status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 9999px; font-size: 13px; font-weight: 500; }
+    .status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 500; }
     .status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
     .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
     .status-pending::before { background: var(--warning); }
@@ -95,25 +91,68 @@
     .status-approved::before { background: var(--success); }
     .status-rejected { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
     .status-rejected::before { background: var(--danger); }
-    .actions { display: flex; gap: 8px; }
-    .actions .btn { padding: 6px 12px; font-size: 13px; }
-    .response-time { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
-    .response-time.good { background: rgba(16, 185, 129, 0.15); color: var(--success); }
-    .response-time.warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
-    .response-time.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
-    .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-secondary); border-top: 1px solid var(--border-subtle); padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); z-index: 100; }
+    .response-time { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
+    .time-good { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+    .time-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+    .time-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+    .actions { display: flex; gap: 8px; flex-wrap: nowrap; }
+    
+    /* Modal */
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); display: none; align-items: flex-end; justify-content: center; z-index: 2000; backdrop-filter: blur(10px); }
+    .modal-overlay.active { display: flex; }
+    .modal { background: var(--bg-secondary); border-radius: 24px 24px 0 0; width: 100%; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg-secondary); z-index: 10; }
+    .modal-title { font-size: 18px; font-weight: 600; }
+    .modal-close { width: 36px; height: 36px; background: var(--bg-elevated); border: none; border-radius: 10px; color: var(--text-secondary); font-size: 20px; cursor: pointer; }
+    .modal-body { padding: 24px; }
+    .modal-footer { display: flex; gap: 12px; padding: 20px 24px; border-top: 1px solid var(--border); }
+    .modal-footer .btn { flex: 1; }
+    .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+    .detail-item { background: var(--bg-tertiary); border-radius: 12px; padding: 16px; }
+    .detail-label { font-size: 12px; color: var(--text-tertiary); margin-bottom: 4px; text-transform: uppercase; font-weight: 600; }
+    .detail-value { font-size: 16px; font-weight: 600; }
+    .message-box { background: var(--bg-tertiary); border-radius: 12px; padding: 16px; font-size: 14px; line-height: 1.7; margin-bottom: 16px; }
+    textarea { width: 100%; min-height: 150px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 12px; padding: 16px; color: var(--text-primary); font-size: 14px; font-family: inherit; resize: vertical; }
+    textarea:focus { outline: none; border-color: var(--accent); }
+    .template-buttons { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .template-btn { padding: 6px 12px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 6px; color: var(--text-secondary); font-size: 12px; cursor: pointer; transition: all 0.15s; }
+    .template-btn:hover { border-color: var(--accent); color: var(--accent); }
+    
+    /* Mobile Nav */
+    .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-secondary); border-top: 1px solid var(--border); padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); z-index: 100; }
     .mobile-nav-items { display: flex; justify-content: space-around; }
-    .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 16px; color: var(--text-tertiary); text-decoration: none; font-size: 11px; font-weight: 500; border-radius: var(--radius-md); transition: all var(--transition-fast); }
+    .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 16px; color: var(--text-tertiary); text-decoration: none; font-size: 11px; font-weight: 500; border-radius: 8px; transition: all 0.15s; }
     .mobile-nav-item.active { color: var(--text-primary); background: var(--bg-elevated); }
     .mobile-nav-item span:first-child { font-size: 20px; }
-    @media (max-width: 1024px) { .sidebar { transform: translateX(-100%); } .sidebar.open { transform: translateX(0); } .main { margin-left: 0; padding: 20px; padding-bottom: 80px; } .mobile-nav { display: block; } }
+    
+    /* Empty state */
+    .empty-state { text-align: center; padding: 60px 24px; }
+    .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+    .empty-text { font-size: 14px; color: var(--text-secondary); }
+    
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; padding: 16px; padding-bottom: 80px; }
+      .mobile-menu-btn { display: flex; }
+      th, td { padding: 12px 16px; }
+      .actions { flex-direction: column; }
+      .mobile-nav { display: block; }
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .page-title { font-size: 24px; }
+      .section-header { padding: 16px 20px; }
+      .modal { border-radius: 20px 20px 0 0; }
+    }
   </style>
 </head>
 <body>
-  <div class="ambient-bg"></div>
-  <div class="noise"></div>
   <div class="app">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <a href="index.html" class="brand">
           <div class="brand-icon">◆</div>
@@ -121,34 +160,35 @@
         </a>
       </div>
       <nav class="nav">
-        <div class="nav-section">
-          <div class="nav-label">Menu</div>
-          <a href="index.html" class="nav-item"><span>◈</span>Dashboard</a>
-          <a href="demandes.html" class="nav-item active"><span>◉</span>Demandes<span class="badge">3</span></a>
-          <a href="statistiques.html" class="nav-item"><span>◆</span>Statistiques</a>
-        </div>
-        <div class="nav-section">
-          <div class="nav-label">Configuration</div>
-          <a href="parametres.html" class="nav-item"><span>◊</span>Paramètres</a>
-        </div>
+        <div class="nav-label">Menu</div>
+        <a href="index.html" class="nav-item"><span>◈</span>Dashboard</a>
+        <a href="demandes.html" class="nav-item active"><span>◉</span>Demandes<span class="badge" id="navBadge">3</span></a>
+        <a href="statistiques.html" class="nav-item"><span>◆</span>Statistiques</a>
+        <div class="nav-label" style="margin-top: 16px;">Configuration</div>
+        <a href="parametres.html" class="nav-item"><span>◊</span>Paramètres</a>
       </nav>
     </aside>
+    
+    <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 99;" onclick="closeSidebar()"></div>
+    
     <main class="main">
-      <header class="page-header">
+      <div class="header">
         <h1 class="page-title">Demandes</h1>
-        <p class="page-subtitle">Gérez et qualifiez vos demandes de location</p>
-      </header>
-      <div class="filters">
-        <button class="filter-chip active">Toutes</button>
-        <button class="filter-chip">En attente</button>
-        <button class="filter-chip">Urgentes</button>
-        <button class="filter-chip">Approuvées</button>
-        <button class="filter-chip">Refusées</button>
+        <button class="mobile-menu-btn" onclick="openSidebar()">☰</button>
       </div>
+      
+      <div class="filters">
+        <button class="filter-chip active" onclick="filterInquiries('all')">Toutes</button>
+        <button class="filter-chip" onclick="filterInquiries('pending')">En attente</button>
+        <button class="filter-chip" onclick="filterInquiries('urgent')">⚠️ Urgentes</button>
+        <button class="filter-chip" onclick="filterInquiries('approved')">Approuvées</button>
+        <button class="filter-chip" onclick="filterInquiries('rejected')">Refusées</button>
+      </div>
+      
       <div class="section">
         <div class="section-header">
-          <h2 class="section-title">12 demandes</h2>
-          <button class="btn btn-primary">+ Nouvelle demande</button>
+          <h2 class="section-title" id="tableTitle">Toutes les demandes</h2>
+          <span style="color: var(--text-secondary); font-size: 14px;" id="tableCount">4 demandes</span>
         </div>
         <div class="table-container">
           <table>
@@ -163,80 +203,20 @@
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div class="client-cell">
-                    <div class="client-avatar">MD</div>
-                    <div class="client-info">
-                      <h4>Marie Dubois</h4>
-                      <p>Anniversaire • 25 pers.</p>
-                    </div>
-                  </div>
-                </td>
-                <td>Anniversaire</td>
-                <td>15 juillet 2026</td>
-                <td><span class="score score-high">92</span></td>
-                <td><span class="response-time danger">45 min</span></td>
-                <td><span class="status status-pending">En attente</span></td>
-                <td>
-                  <div class="actions">
-                    <button class="btn btn-secondary">Voir</button>
-                    <button class="btn btn-success">✓</button>
-                    <button class="btn btn-danger">✗</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="client-cell">
-                    <div class="client-avatar">TL</div>
-                    <div class="client-info">
-                      <h4>Thomas Laurent</h4>
-                      <p>Cousinade • 35 pers.</p>
-                    </div>
-                  </div>
-                </td>
-                <td>Cousinade</td>
-                <td>22 août 2026</td>
-                <td><span class="score score-medium">65</span></td>
-                <td><span class="response-time warning">2h</span></td>
-                <td><span class="status status-pending">En attente</span></td>
-                <td>
-                  <div class="actions">
-                    <button class="btn btn-secondary">Voir</button>
-                    <button class="btn btn-success">✓</button>
-                    <button class="btn btn-danger">✗</button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="client-cell">
-                    <div class="client-avatar">SM</div>
-                    <div class="client-info">
-                      <h4>Sophie Martin</h4>
-                      <p>Baby Shower • 20 pers.</p>
-                    </div>
-                  </div>
-                </td>
-                <td>Baby Shower</td>
-                <td>5 septembre 2026</td>
-                <td><span class="score score-high">88</span></td>
-                <td><span class="response-time good">5 min</span></td>
-                <td><span class="status status-approved">Approuvée</span></td>
-                <td>
-                  <div class="actions">
-                    <button class="btn btn-secondary">Détails</button>
-                  </div>
-                </td>
-              </tr>
+            <tbody id="inquiriesTable">
+              <!-- JS populated -->
             </tbody>
           </table>
+          <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">📭</div>
+            <div class="empty-title">Aucune demande</div>
+            <div class="empty-text">Il n'y a pas de demandes dans cette catégorie</div>
+          </div>
         </div>
       </div>
     </main>
   </div>
+  
   <nav class="mobile-nav">
     <div class="mobile-nav-items">
       <a href="index.html" class="mobile-nav-item"><span>◈</span>Dashboard</a>
@@ -245,5 +225,232 @@
       <a href="parametres.html" class="mobile-nav-item"><span>◊</span>Réglages</a>
     </div>
   </nav>
+  
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">✏️ Voir & Éditer</h3>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+        <button class="btn btn-primary" onclick="approveAndSend()">✅ Approuver & Envoyer</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Data
+    let inquiries = [
+      { id: 1, name: 'Marie Dubois', initials: 'MD', event: 'Anniversaire', date: '15 juil. 2026', guests: 25, price: 900, score: 92, waitTime: 45, status: 'pending', message: 'Bonjour, je souhaite organiser un anniversaire pour 25 personnes le 15 juillet.', response: 'Bonjour Marie,\n\nMerci pour votre intérêt ! Votre anniversaire du 15 juillet pour 25 personnes est tout à fait envisageable.\n\n✓ Capacité : 25/40 personnes\n✓ Date : disponible\n✓ Équipements inclus\n\nLe tarif est de 900€.\n\nJe vous propose de venir visiter l\'espace.\n\nÀ bientôt,\nHostFlow' },
+      { id: 2, name: 'Thomas Laurent', initials: 'TL', event: 'Cousinade', date: '22 août 2026', guests: 35, price: 1050, score: 65, waitTime: 120, status: 'pending', message: 'Bonjour, nous sommes une famille de 35 personnes.', response: 'Bonjour Thomas,\n\nMerci pour votre demande. Pour 35 personnes, le tarif est de 1050€.\n\nCordialement,\nHostFlow' },
+      { id: 3, name: 'Sophie Martin', initials: 'SM', event: 'Baby Shower', date: '5 sept. 2026', guests: 20, price: 900, score: 88, waitTime: 5, status: 'approved', message: 'Bonjour, je souhaite organiser un baby shower.', response: 'Bonjour Sophie,\n\nAvec plaisir ! Le baby shower pour 20 personnes est possible au tarif de 900€.\n\nÀ bientôt,\nHostFlow' },
+      { id: 4, name: 'Pierre Durand', initials: 'PD', event: 'Mariage', date: '12 juil. 2026', guests: 45, price: 0, score: 25, waitTime: 180, status: 'pending', message: 'Bonjour, nous organisons notre mariage pour 45 personnes.', response: '' }
+    ];
+    
+    let currentInquiry = null;
+    let currentFilter = 'all';
+    
+    function getScoreClass(score) {
+      if (score >= 80) return 'score-high';
+      if (score >= 50) return 'score-medium';
+      return 'score-low';
+    }
+    
+    function getTimeClass(minutes) {
+      if (minutes < 30) return 'time-good';
+      if (minutes < 60) return 'time-warning';
+      return 'time-danger';
+    }
+    
+    function getStatusLabel(status) {
+      const labels = { pending: 'En attente', approved: 'Approuvée', rejected: 'Refusée' };
+      return labels[status] || status;
+    }
+    
+    function renderTable() {
+      const tbody = document.getElementById('inquiriesTable');
+      const emptyState = document.getElementById('emptyState');
+      const tableTitle = document.getElementById('tableTitle');
+      const tableCount = document.getElementById('tableCount');
+      
+      let filtered = inquiries;
+      if (currentFilter === 'pending') filtered = inquiries.filter(i => i.status === 'pending');
+      else if (currentFilter === 'urgent') filtered = inquiries.filter(i => i.status === 'pending' && i.waitTime > 30);
+      else if (currentFilter === 'approved') filtered = inquiries.filter(i => i.status === 'approved');
+      else if (currentFilter === 'rejected') filtered = inquiries.filter(i => i.status === 'rejected');
+      
+      // Update badge
+      const pendingCount = inquiries.filter(i => i.status === 'pending').length;
+      document.getElementById('navBadge').textContent = pendingCount;
+      document.getElementById('navBadge').style.display = pendingCount > 0 ? 'block' : 'none';
+      
+      // Update title
+      const titles = { all: 'Toutes les demandes', pending: 'En attente', urgent: 'Urgentes', approved: 'Approuvées', rejected: 'Refusées' };
+      tableTitle.textContent = titles[currentFilter] || 'Demandes';
+      tableCount.textContent = filtered.length + ' demande' + (filtered.length > 1 ? 's' : '');
+      
+      if (filtered.length === 0) {
+        tbody.innerHTML = '';
+        emptyState.style.display = 'block';
+        return;
+      }
+      
+      emptyState.style.display = 'none';
+      tbody.innerHTML = filtered.map(i => `
+        <tr>
+          <td>
+            <div class="client-cell">
+              <div class="avatar">${i.initials}</div>
+              <div>
+                <div class="client-name">${i.name}</div>
+                <div class="client-meta">${i.guests} pers.</div>
+              </div>
+            </div>
+          </td>
+          <td>${i.event}</td>
+          <td>${i.date}</td>
+          <td><span class="score ${getScoreClass(i.score)}">${i.score}</span></td>
+          <td>${i.status === 'pending' ? `<span class="response-time ${getTimeClass(i.waitTime)}">${i.waitTime} min</span>` : '-'}</td>
+          <td><span class="status status-${i.status}">${getStatusLabel(i.status)}</span></td>
+          <td>
+            <div class="actions">
+              ${i.status === 'pending' ? `
+                <button class="btn btn-secondary btn-sm" onclick="viewInquiry(${i.id})">Voir</button>
+                <button class="btn btn-success btn-sm" onclick="quickApprove(${i.id})">✓</button>
+                <button class="btn btn-danger btn-sm" onclick="rejectInquiry(${i.id})">✗</button>
+              ` : `<button class="btn btn-secondary btn-sm" onclick="viewInquiry(${i.id})">Détails</button>`}
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+    
+    function filterInquiries(filter) {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      currentFilter = filter;
+      renderTable();
+    }
+    
+    function openSidebar() {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('overlay').style.display = 'block';
+    }
+    
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('overlay').style.display = 'none';
+    }
+    
+    function viewInquiry(id) {
+      currentInquiry = inquiries.find(i => i.id === id);
+      if (!currentInquiry) return;
+      
+      const defaultResponse = currentInquiry.response || `Bonjour ${currentInquiry.name},\n\nMerci pour votre intérêt concernant votre ${currentInquiry.event.toLowerCase()}.\n\nPour ${currentInquiry.guests} personnes, le tarif est de ${currentInquiry.price || 'XXX'}€.\n\nJe vous propose de venir visiter l'espace.\n\nÀ bientôt,\nHostFlow`;
+      
+      document.getElementById('modalBody').innerHTML = `
+        <div class="detail-grid">
+          <div class="detail-item">
+            <div class="detail-label">Client</div>
+            <div class="detail-value">${currentInquiry.name}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Événement</div>
+            <div class="detail-value">${currentInquiry.event}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Date</div>
+            <div class="detail-value">${currentInquiry.date}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Personnes</div>
+            <div class="detail-value">${currentInquiry.guests}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Prix</div>
+            <div class="detail-value">${currentInquiry.price || 'N/A'}€</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Score</div>
+            <div class="detail-value">${currentInquiry.score}/100</div>
+          </div>
+        </div>
+        <div>
+          <div class="detail-label">Message du client</div>
+          <div class="message-box">${currentInquiry.message}</div>
+        </div>
+        <div>
+          <div class="detail-label">Réponse à envoyer</div>
+          <div class="template-buttons">
+            <button class="template-btn" onclick="addTemplate('standard')">+ Formule standard</button>
+            <button class="template-btn" onclick="addTemplate('visite')">+ Proposer visite</button>
+            <button class="template-btn" onclick="addTemplate('clarification')">+ Demander précisions</button>
+          </div>
+          <textarea id="responseText">${defaultResponse}</textarea>
+        </div>
+      `;
+      document.getElementById('modal').classList.add('active');
+    }
+    
+    function addTemplate(type) {
+      const textarea = document.getElementById('responseText');
+      const templates = {
+        standard: '\n\nJe reste disponible pour toute question.',
+        visite: '\n\nJe vous propose de venir visiter l\'espace. Mes disponibilités :\n- Lundi 10h-18h\n- Mercredi 14h-19h\n- Samedi 10h-12h',
+        clarification: '\n\nPourriez-vous me préciser :\n- Le nombre exact de personnes ?\n- Si vous avez besoin de couchage ?\n- Votre budget ?'
+      };
+      textarea.value += templates[type] || '';
+    }
+    
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+    
+    function approveAndSend() {
+      const responseText = document.getElementById('responseText').value;
+      if (currentInquiry) {
+        currentInquiry.response = responseText;
+        currentInquiry.status = 'approved';
+        alert(`✅ Demande approuvée !\n\nLa réponse a été envoyée à Jarvis pour validation finale.\n\n📧 Client: ${currentInquiry.name}\n💬 Réponse: ${responseText.substring(0, 100)}...`);
+        closeModal();
+        renderTable();
+      }
+    }
+    
+    function quickApprove(id) {
+      viewInquiry(id);
+    }
+    
+    function rejectInquiry(id) {
+      if (confirm('Êtes-vous sûr de vouloir refuser cette demande ?')) {
+        const inquiry = inquiries.find(i => i.id === id);
+        if (inquiry) {
+          inquiry.status = 'rejected';
+          renderTable();
+        }
+      }
+    }
+    
+    // Update wait times every minute
+    setInterval(() => {
+      inquiries.forEach(i => {
+        if (i.status === 'pending') i.waitTime++;
+      });
+      renderTable();
+    }, 60000);
+    
+    // Initial render
+    renderTable();
+    
+    // Check URL params for direct inquiry view
+    const urlParams = new URLSearchParams(window.location.search);
+    const inquiryId = urlParams.get('id');
+    if (inquiryId) {
+      viewInquiry(parseInt(inquiryId));
+    }
+  </script>
 </body>
 </html>
