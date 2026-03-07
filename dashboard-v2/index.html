@@ -130,8 +130,171 @@
     .relance-type.visit { background: rgba(0, 212, 255, 0.2); color: var(--primary); }
     .relance-type.followup { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
     
+    /* MICRO-INTERACTIONS */
+    .btn {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    .btn:active::before {
+      width: 300px;
+      height: 300px;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+    }
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .stat-card, .inquiry-card, .relance-item, .kpi-item {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 212, 255, 0.15);
+      border-color: rgba(0, 212, 255, 0.3);
+    }
+    .inquiry-card:hover {
+      transform: translateX(8px);
+      border-color: rgba(0, 212, 255, 0.3);
+      box-shadow: -4px 0 20px rgba(0, 212, 255, 0.1);
+    }
+    
+    .filter-chip {
+      transition: all 0.2s ease;
+    }
+    .filter-chip:hover {
+      transform: scale(1.05);
+    }
+    .filter-chip:active {
+      transform: scale(0.95);
+    }
+    
+    .nav-item {
+      transition: all 0.2s ease;
+    }
+    .nav-item:hover {
+      transform: translateX(4px);
+    }
+    
+    .client-avatar {
+      transition: all 0.3s ease;
+    }
+    .inquiry-card:hover .client-avatar {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    }
+    
+    /* SKELETON LOADING */
+    .skeleton {
+      background: linear-gradient(90deg, var(--dark-hover) 25%, var(--dark-card) 50%, var(--dark-hover) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    
+    /* THEME TOGGLE */
+    .theme-toggle {
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--dark-card);
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      color: var(--primary);
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+    }
+    
+    /* LIGHT THEME */
+    body.light-theme {
+      --dark: #f8fafc;
+      --dark-light: #ffffff;
+      --dark-card: #ffffff;
+      --dark-hover: #f1f5f9;
+      --text: #0f172a;
+      --text-muted: #64748b;
+    }
+    body.light-theme .bg-animation {
+      background: radial-gradient(ellipse at 20% 20%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 80%, rgba(124, 58, 237, 0.05) 0%, transparent 50%);
+    }
+    body.light-theme .header,
+    body.light-theme .sidenav,
+    body.light-theme .bottom-nav {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(0, 212, 255, 0.1);
+    }
+    
+    /* STAGGER ANIMATION */
+    .inquiry-card:nth-child(1) { animation: fadeInUp 0.5s ease 0.1s both; }
+    .inquiry-card:nth-child(2) { animation: fadeInUp 0.5s ease 0.2s both; }
+    .inquiry-card:nth-child(3) { animation: fadeInUp 0.5s ease 0.3s both; }
+    .inquiry-card:nth-child(4) { animation: fadeInUp 0.5s ease 0.4s both; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* SCROLLBAR STYLING */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--dark-hover);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+    
+    /* FOCUS STATES */
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+    
     @media (min-width: 1024px) {
       .header { left: 280px; } .sidenav { transform: translateX(0); } .main { margin-left: 280px; padding: 90px 32px 40px; } .menu-btn, .bottom-nav { display: none; } .stats-grid, .kpi-grid { grid-template-columns: repeat(4, 1fr); } .modal { max-width: 600px; border-radius: 24px; margin: 40px auto; max-height: 80vh; }
+      .theme-toggle { bottom: 40px; right: 40px; }
     }
   </style>
 </head>
@@ -284,6 +447,9 @@
     <a href="statistiques.html" class="bottom-nav-item"><span>📈</span>Stats</a>
     <a href="parametres.html" class="bottom-nav-item"><span>⚙️</span>Réglages</a>
   </nav>
+  
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()" title="Changer de thème">🌙</button>
 
   <script>
     // Data
@@ -357,6 +523,29 @@
       inquiries.forEach(i => { if (i.status === 'pending') i.waitTime++; });
       renderInquiries();
     }, 60000);
+    
+    // Theme toggle
+    function toggleTheme() {
+      document.body.classList.toggle('light-theme');
+      const btn = document.querySelector('.theme-toggle');
+      const isLight = document.body.classList.contains('light-theme');
+      btn.textContent = isLight ? '☀️' : '🌙';
+      localStorage.setItem('hostflow-theme', isLight ? 'light' : 'dark');
+    }
+    
+    // Load saved theme
+    const savedTheme = localStorage.getItem('hostflow-theme');
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-theme');
+      document.querySelector('.theme-toggle').textContent = '☀️';
+    }
+    
+    // Haptic feedback on buttons (if supported)
+    document.querySelectorAll('.btn, .filter-chip, .nav-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (navigator.vibrate) navigator.vibrate(10);
+      });
+    });
     
     renderInquiries();
   </script>
