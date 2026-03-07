@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Jarvis AI - Demandes</title>
+  <title>HostFlow - Demandes</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -101,15 +101,28 @@
     .bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 16px; color: var(--text-muted); text-decoration: none; font-size: 11px; font-weight: 500; }
     .bottom-nav-item.active { color: var(--primary); }
     .bottom-nav-item span:first-child { font-size: 22px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); display: none; align-items: flex-end; justify-content: center; z-index: 2000; backdrop-filter: blur(10px); }
+    .modal-overlay.active { display: flex; }
+    .modal { background: var(--dark-card); border-radius: 24px 24px 0 0; width: 100%; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid rgba(0, 212, 255, 0.1); position: sticky; top: 0; background: var(--dark-card); z-index: 10; }
+    .modal-title { font-size: 18px; font-weight: 600; }
+    .modal-close { width: 36px; height: 36px; background: var(--dark-hover); border: none; border-radius: 10px; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+    .modal-body { padding: 20px; }
+    .modal-footer { display: flex; gap: 12px; padding: 20px; border-top: 1px solid rgba(0, 212, 255, 0.1); }
+    .modal-footer .btn { flex: 1; justify-content: center; }
+    .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .detail-item { background: var(--dark-hover); border-radius: 12px; padding: 16px; }
     @media (min-width: 1024px) {
       .header { left: 280px; } .sidenav { transform: translateX(0); } .main { margin-left: 280px; padding: 90px 32px 40px; } .menu-btn, .bottom-nav { display: none; }
+      .modal { max-width: 600px; border-radius: 24px; margin: 40px auto; max-height: 80vh; }
     }
   </style>
 </head>
 <body>
   <div class="bg-animation"></div>
   <header class="header">
-    <a href="index.html" class="logo"><div class="logo-icon">🤖</div><div class="logo-text">Jarvis AI</div></a>
+    <a href="index.html" class="logo"><div class="logo-icon">🤖</div><div class="logo-text">HostFlow</div></a>
     <button class="menu-btn" onclick="toggleNav()">☰</button>
   </header>
   <nav class="sidenav" id="sidenav">
@@ -161,9 +174,9 @@
           <div class="inquiry-meta"><span>📅 ${i.date}</span><span>👥 ${i.guests} pers.</span><span>💰 ${i.price}€</span></div>
           <div class="inquiry-preview">${i.message}</div>
           <div class="inquiry-actions">
+            <button class="btn btn-secondary" onclick="event.stopPropagation(); viewInquiry(${i.id})">👁 Voir & Éditer</button>
             ${i.status === 'pending' ? `
-              <button class="btn btn-success" onclick="updateStatus(${i.id}, 'approved')">✓ Approuver</button>
-              <button class="btn btn-danger" onclick="updateStatus(${i.id}, 'rejected')">✗ Refuser</button>
+              <button class="btn btn-success" onclick="event.stopPropagation(); approveInquiry(${i.id})">✓ Approuver</button>
             ` : `<span style="color: ${i.status === 'approved' ? 'var(--success)' : 'var(--danger)'}; font-weight: 600;">${i.status === 'approved' ? '✓ Approuvée' : '✗ Refusée'}</span>`}
           </div>
         </div>
@@ -173,6 +186,82 @@
     document.addEventListener('click', (e) => { const nav = document.getElementById('sidenav'); const btn = document.querySelector('.menu-btn'); if (!nav.contains(e.target) && !btn.contains(e.target)) nav.classList.remove('active'); });
     function filterInquiries(status) { document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active')); event.target.classList.add('active'); renderInquiries(status); }
     function updateStatus(id, status) { const i = inquiries.find(x => x.id === id); if (i) { i.status = status; renderInquiries(); } }
+    
+    let currentInquiry = null;
+    
+    function viewInquiry(id) {
+      currentInquiry = inquiries.find(i => i.id === id);
+      if (!currentInquiry) return;
+      
+      const modal = document.createElement('div');
+      modal.id = 'editModal';
+      modal.className = 'modal-overlay active';
+      modal.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">✏️ Modifier la réponse</h3>
+            <button class="modal-close" onclick="closeModal()">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="detail-grid" style="margin-bottom: 16px;">
+              <div class="detail-item">
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">CLIENT</div>
+                <div style="font-weight: 600;">${currentInquiry.name}</div>
+              </div>
+              <div class="detail-item">
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">ÉVÉNEMENT</div>
+                <div style="font-weight: 600;">${currentInquiry.event}</div>
+              </div>
+              <div class="detail-item">
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">DATE</div>
+                <div style="font-weight: 600;">${currentInquiry.date}</div>
+              </div>
+              <div class="detail-item">
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">PRIX</div>
+                <div style="font-weight: 600;">${currentInquiry.price}€</div>
+              </div>
+            </div>
+            <div style="margin-bottom: 16px;">
+              <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Message du client</div>
+              <div style="background: var(--dark-hover); border-radius: 12px; padding: 16px; font-size: 14px; line-height: 1.6;">${currentInquiry.message}</div>
+            </div>
+            <div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Réponse à envoyer (éditable)</div>
+              <textarea id="responseText" style="width: 100%; min-height: 150px; background: var(--dark-hover); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 12px; padding: 16px; color: #fff; font-size: 14px; line-height: 1.6; font-family: inherit; resize: vertical;">${currentInquiry.response || 'Bonjour ' + currentInquiry.name + ',\n\nMerci pour votre demande concernant votre ' + currentInquiry.event.toLowerCase() + '.\n\nLe tarif pour ' + currentInquiry.guests + ' personnes est de ' + currentInquiry.price + '€.\n\nÀ bientôt,\nHostFlow'}</textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+            <button class="btn btn-primary" onclick="saveAndApprove()">💾 Approuver & Envoyer à Jarvis</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    function closeModal() {
+      const modal = document.getElementById('editModal');
+      if (modal) modal.remove();
+    }
+    
+    function saveAndApprove() {
+      const responseText = document.getElementById('responseText').value;
+      if (currentInquiry) {
+        currentInquiry.response = responseText;
+        currentInquiry.status = 'approved';
+        
+        // Ici on enverrait la notification à Jarvis
+        alert('✅ Demande approuvée !\n\nLa réponse a été envoyée à Jarvis pour validation finale.\n\n📧 Client: ' + currentInquiry.name + '\n💬 Réponse: ' + responseText.substring(0, 100) + '...');
+        
+        closeModal();
+        renderInquiries();
+      }
+    }
+    
+    function approveInquiry(id) {
+      viewInquiry(id);
+    }
+    
     document.querySelectorAll('.filter-chip').forEach(c => c.addEventListener('click', function() { document.querySelectorAll('.filter-chip').forEach(x => x.classList.remove('active')); this.classList.add('active'); }));
     renderInquiries();
   </script>
