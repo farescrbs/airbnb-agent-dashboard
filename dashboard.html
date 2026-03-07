@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dashboard — Airbnb Agent Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">🤖 Agent Pro</div>
+      
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link active">
+            <span>📊</span> Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="demandes.html" class="nav-link">
+            <span>📨</span> Demandes
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="statistiques.html" class="nav-link">
+            <span>📈</span> Statistiques
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="parametres.html" class="nav-link">
+            <span>⚙️</span> Paramètres
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">A</div>
+          <div>
+            <div class="user-name">Admin</div>
+            <div class="user-role">Propriétaire</div>
+          </div>
+        </div>
+        <button onclick="auth.logout()" style="background:none;border:none;color:var(--gray);cursor:pointer;margin-top:8px;font-size:0.8rem;">Déconnexion</button>
+      </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+      <div class="mobile-logo">🤖 Agent Pro</div>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <div class="header">
+        <h2>Tableau de bord</h2>
+        <div class="header-actions">
+          <button class="btn btn-secondary">🔄 Actualiser</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">En attente</span>
+            <div class="stat-icon pink">📨</div>
+          </div>
+          <div class="stat-value" id="stat-pending">12</div>
+          <div class="stat-change">+3 aujourd'hui</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Traitées</span>
+            <div class="stat-icon green">✓</div>
+          </div>
+          <div class="stat-value" id="stat-processed">48</div>
+          <div class="stat-change">+8 cette semaine</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Conversion</span>
+            <div class="stat-icon orange">📈</div>
+          </div>
+          <div class="stat-value" id="stat-conversion">85%</div>
+          <div class="stat-change">+12% vs mois dernier</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Revenus</span>
+            <div class="stat-icon blue">€</div>
+          </div>
+          <div class="stat-value" id="stat-revenue">12.4k</div>
+          <div class="stat-change">Ce mois</div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters-bar">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">Tous</button>
+          <button class="filter-tab" data-filter="pending">En attente</button>
+          <button class="filter-tab" data-filter="approved">Approuvés</button>
+          <button class="filter-tab" data-filter="rejected">Refusés</button>
+        </div>
+        <div class="search-box">
+          <input type="text" id="search" placeholder="Rechercher...">
+        </div>
+      </div>
+
+      <!-- Inquiries List -->
+      <div class="inquiries-list" id="inquiries-list">
+        <!-- Filled by JS -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Détail de la demande</h3>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Filled by JS -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
+        <button class="btn btn-secondary" onclick="editResponse()">✏️ Modifier</button>
+        <button class="btn" style="background: var(--danger); color: white;" onclick="rejectInquiry()">❌ Refuser</button>
+        <button class="btn btn-primary" onclick="approveInquiry()">✅ Approuver</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
