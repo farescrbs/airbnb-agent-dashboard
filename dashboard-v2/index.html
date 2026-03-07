@@ -4,576 +4,134 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>HostFlow - Dashboard</title>
+  <title>HostFlow - Dashboard Pro</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
     :root {
-      --primary: #00d4ff;
-      --secondary: #7c3aed;
-      --accent: #f472b6;
-      --dark: #0a0a0f;
-      --dark-light: #13131f;
-      --dark-card: #1a1a2e;
-      --dark-hover: #252542;
-      --text: #ffffff;
-      --text-muted: #8b8b9e;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
+      --primary: #00d4ff; --secondary: #7c3aed; --accent: #f472b6;
+      --dark: #0a0a0f; --dark-light: #13131f; --dark-card: #1a1a2e; --dark-hover: #252542;
+      --text: #ffffff; --text-muted: #8b8b9e;
+      --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
     }
-    
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--dark);
-      color: var(--text);
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
-    
-    /* Background Animation */
-    .bg-animation {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: 
-        radial-gradient(ellipse at 20% 20%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    
-    /* Header */
-    .header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 70px;
-      background: rgba(19, 19, 31, 0.95);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      z-index: 1000;
-    }
-    
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
-    
-    .logo-icon {
-      width: 42px; height: 42px;
-      background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); }
-      50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.6); }
-    }
-    
-    .logo-text {
-      font-weight: 700;
-      font-size: 20px;
-      background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .menu-btn {
-      width: 44px; height: 44px;
-      background: var(--dark-card);
-      border: 1px solid rgba(0, 212, 255, 0.2);
-      border-radius: 12px;
-      color: var(--primary);
-      font-size: 20px;
-      cursor: pointer;
-    }
-    
-    /* Side Navigation */
-    .sidenav {
-      position: fixed;
-      top: 70px; left: 0; bottom: 0;
-      width: 280px;
-      background: rgba(19, 19, 31, 0.98);
-      backdrop-filter: blur(20px);
-      border-right: 1px solid rgba(0, 212, 255, 0.1);
-      padding: 24px 16px;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      z-index: 999;
-    }
-    
+    body { font-family: 'Inter', sans-serif; background: var(--dark); color: var(--text); line-height: 1.5; overflow-x: hidden; }
+    .bg-animation { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 20% 20%, rgba(0, 212, 255, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(124, 58, 237, 0.1) 0%, transparent 50%); pointer-events: none; z-index: 0; }
+    .header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(19, 19, 31, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 212, 255, 0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { width: 42px; height: 42px; background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); } 50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.6); } }
+    .logo-text { font-weight: 700; font-size: 20px; background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .menu-btn { width: 44px; height: 44px; background: var(--dark-card); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 12px; color: var(--primary); font-size: 20px; cursor: pointer; }
+    .sidenav { position: fixed; top: 70px; left: 0; bottom: 0; width: 280px; background: rgba(19, 19, 31, 0.98); backdrop-filter: blur(20px); border-right: 1px solid rgba(0, 212, 255, 0.1); padding: 24px 16px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 999; }
     .sidenav.active { transform: translateX(0); }
+    .nav-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 12px; padding-left: 12px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; color: var(--text-muted); text-decoration: none; border-radius: 12px; margin-bottom: 4px; font-size: 15px; font-weight: 500; }
+    .nav-item:hover, .nav-item.active { background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%); color: white; }
+    .main { padding: 90px 20px 100px; position: relative; z-index: 1; }
+    .page-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .page-subtitle { color: var(--text-muted); margin-bottom: 24px; }
     
-    .nav-title {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-      padding-left: 12px;
-    }
+    /* ALERT BANNER */
+    .alert-banner { background: linear-gradient(135deg, var(--danger) 0%, #ff6b6b 100%); border-radius: 16px; padding: 16px 20px; margin-bottom: 20px; display: none; align-items: center; justify-content: space-between; animation: pulse 2s infinite; }
+    .alert-banner.active { display: flex; }
+    .alert-content { display: flex; align-items: center; gap: 12px; }
+    .alert-icon { font-size: 24px; }
+    .alert-text { font-weight: 600; }
+    .alert-btn { background: white; color: var(--danger); border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; }
     
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
-      color: var(--text-muted);
-      text-decoration: none;
-      border-radius: 12px;
-      margin-bottom: 4px;
-      font-size: 15px;
-      font-weight: 500;
-    }
-    
-    .nav-item:hover, .nav-item.active {
-      background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-      color: white;
-    }
-    
-    .nav-badge {
-      margin-left: auto;
-      background: var(--danger);
-      color: white;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 10px;
-    }
-    
-    /* Main Content */
-    .main {
-      padding: 90px 20px 100px;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .page-title {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    
-    .page-subtitle {
-      color: var(--text-muted);
-      margin-bottom: 24px;
-    }
-    
-    /* Stats Grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    
-    .stat-card {
-      background: var(--dark-card);
-      border: 1px solid rgba(0, 212, 255, 0.1);
-      border-radius: 20px;
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-    }
-    
-    .stat-icon {
-      width: 48px; height: 48px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 16px;
-    }
-    
+    /* STATS GRID */
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: var(--dark-card); border: 1px solid rgba(0, 212, 255, 0.1); border-radius: 20px; padding: 20px; position: relative; overflow: hidden; }
+    .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%); }
+    .stat-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; }
     .stat-icon.blue { background: rgba(0, 212, 255, 0.1); }
     .stat-icon.green { background: rgba(16, 185, 129, 0.1); }
     .stat-icon.orange { background: rgba(245, 158, 11, 0.1); }
     .stat-icon.pink { background: rgba(244, 114, 182, 0.1); }
+    .stat-value { font-size: 32px; font-weight: 700; margin-bottom: 4px; }
+    .stat-label { font-size: 13px; color: var(--text-muted); }
+    .stat-change { font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+    .stat-change.positive { color: var(--success); }
     
-    .stat-value {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
+    /* KPI Section */
+    .kpi-section { background: var(--dark-card); border: 1px solid rgba(0, 212, 255, 0.1); border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+    .kpi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .kpi-title { font-size: 18px; font-weight: 600; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .kpi-item { background: var(--dark-hover); border-radius: 12px; padding: 16px; text-align: center; }
+    .kpi-value { font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .kpi-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; }
     
-    .stat-label {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
+    /* SECTION */
+    .section { background: var(--dark-card); border: 1px solid rgba(0, 212, 255, 0.1); border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .section-title { font-size: 18px; font-weight: 600; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 12px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; }
+    .btn-primary { background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%); color: white; }
+    .btn-secondary { background: var(--dark-hover); color: var(--text); border: 1px solid rgba(0, 212, 255, 0.2); }
     
-    /* Section */
-    .section {
-      background: var(--dark-card);
-      border: 1px solid rgba(0, 212, 255, 0.1);
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
+    /* INQUIRY CARDS */
+    .filters { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 20px; -webkit-overflow-scrolling: touch; }
+    .filter-chip { padding: 10px 18px; background: var(--dark-hover); border: 1px solid rgba(0, 212, 255, 0.1); border-radius: 25px; color: var(--text-muted); font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+    .filter-chip.active { background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%); color: white; border-color: transparent; }
+    .inquiry-list { display: flex; flex-direction: column; gap: 12px; }
+    .inquiry-card { background: var(--dark-hover); border: 1px solid rgba(0, 212, 255, 0.05); border-radius: 16px; padding: 16px; cursor: pointer; transition: all 0.3s; position: relative; }
+    .inquiry-card:hover { border-color: rgba(0, 212, 255, 0.2); transform: translateX(4px); }
+    .inquiry-card.urgent { border-left: 4px solid var(--danger); }
+    .inquiry-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .inquiry-client { display: flex; align-items: center; gap: 12px; }
+    .client-avatar { width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px; }
+    .client-info h4 { font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+    .client-info p { font-size: 13px; color: var(--text-muted); }
+    .score-badge { width: 44px; height: 44px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+    .score-badge.high { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+    .score-badge.medium { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+    .score-badge.low { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+    .inquiry-meta { display: flex; gap: 16px; font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+    .inquiry-preview { font-size: 14px; color: var(--text-muted); line-height: 1.6; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .response-time { position: absolute; top: 16px; right: 16px; font-size: 11px; padding: 4px 8px; border-radius: 8px; font-weight: 600; }
+    .response-time.good { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+    .response-time.warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+    .response-time.danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); animation: blink 1s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
+    /* MODAL */
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); display: none; align-items: flex-end; justify-content: center; z-index: 2000; backdrop-filter: blur(10px); }
+    .modal-overlay.active { display: flex; }
+    .modal { background: var(--dark-card); border-radius: 24px 24px 0 0; width: 100%; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid rgba(0, 212, 255, 0.1); position: sticky; top: 0; background: var(--dark-card); z-index: 10; }
+    .modal-title { font-size: 18px; font-weight: 600; }
+    .modal-close { width: 36px; height: 36px; background: var(--dark-hover); border: none; border-radius: 10px; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+    .modal-body { padding: 20px; }
+    .modal-footer { display: flex; gap: 12px; padding: 20px; border-top: 1px solid rgba(0, 212, 255, 0.1); }
+    .modal-footer .btn { flex: 1; justify-content: center; }
+    .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+    .detail-item { background: var(--dark-hover); border-radius: 12px; padding: 16px; }
+    .detail-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
+    .detail-value { font-size: 16px; font-weight: 600; }
+    .response-box { background: var(--dark-hover); border: 1px solid rgba(0, 212, 255, 0.1); border-radius: 12px; padding: 16px; font-size: 14px; line-height: 1.7; white-space: pre-wrap; max-height: 200px; overflow-y: auto; }
+    textarea { width: 100%; min-height: 150px; background: var(--dark-hover); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 12px; padding: 16px; color: #fff; font-size: 14px; line-height: 1.6; font-family: inherit; resize: vertical; }
+    textarea:focus { outline: none; border-color: var(--primary); }
     
-    .section-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
+    /* BOTTOM NAV */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 80px; background: rgba(19, 19, 31, 0.98); backdrop-filter: blur(20px); border-top: 1px solid rgba(0, 212, 255, 0.1); display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom, 0); z-index: 1000; }
+    .bottom-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 16px; color: var(--text-muted); text-decoration: none; font-size: 11px; font-weight: 500; }
+    .bottom-nav-item.active { color: var(--primary); }
+    .bottom-nav-item span:first-child { font-size: 22px; }
     
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 20px;
-      border-radius: 12px;
-      border: none;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-    }
+    /* RELANCE SECTION */
+    .relance-list { display: flex; flex-direction: column; gap: 12px; }
+    .relance-item { background: var(--dark-hover); border-radius: 12px; padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .relance-info h4 { font-size: 15px; margin-bottom: 4px; }
+    .relance-info p { font-size: 13px; color: var(--text-muted); }
+    .relance-type { font-size: 11px; padding: 4px 10px; border-radius: 10px; font-weight: 600; }
+    .relance-type.visit { background: rgba(0, 212, 255, 0.2); color: var(--primary); }
+    .relance-type.followup { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
     
-    .btn-primary {
-      background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-      color: white;
-    }
-    
-    .btn-secondary {
-      background: var(--dark-hover);
-      color: var(--text);
-      border: 1px solid rgba(0, 212, 255, 0.2);
-    }
-    
-    /* Filters */
-    .filters {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 20px;
-      -webkit-overflow-scrolling: touch;
-    }
-    
-    .filter-chip {
-      padding: 10px 18px;
-      background: var(--dark-hover);
-      border: 1px solid rgba(0, 212, 255, 0.1);
-      border-radius: 25px;
-      color: var(--text-muted);
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    
-    .filter-chip.active {
-      background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-      color: white;
-      border-color: transparent;
-    }
-    
-    /* Inquiry Cards */
-    .inquiry-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    
-    .inquiry-card {
-      background: var(--dark-hover);
-      border: 1px solid rgba(0, 212, 255, 0.05);
-      border-radius: 16px;
-      padding: 16px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .inquiry-card:hover {
-      border-color: rgba(0, 212, 255, 0.2);
-      transform: translateX(4px);
-    }
-    
-    .inquiry-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 12px;
-    }
-    
-    .inquiry-client {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .client-avatar {
-      width: 48px; height: 48px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      font-size: 16px;
-    }
-    
-    .client-info h4 {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-    
-    .client-info p {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-    
-    .score-badge {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 14px;
-    }
-    
-    .score-badge.high {
-      background: rgba(16, 185, 129, 0.15);
-      color: var(--success);
-    }
-    
-    .score-badge.medium {
-      background: rgba(245, 158, 11, 0.15);
-      color: var(--warning);
-    }
-    
-    .inquiry-meta {
-      display: flex;
-      gap: 16px;
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-    
-    .inquiry-preview {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-    }
-    
-    .inquiry-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 16px;
-    }
-    
-    .inquiry-actions .btn {
-      flex: 1;
-      justify-content: center;
-      padding: 10px;
-      font-size: 13px;
-    }
-    
-    /* Chart */
-    .chart-container {
-      position: relative;
-      height: 250px;
-      margin-top: 16px;
-    }
-    
-    /* Bottom Navigation */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 80px;
-      background: rgba(19, 19, 31, 0.98);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(0, 212, 255, 0.1);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding-bottom: env(safe-area-inset-bottom, 0);
-      z-index: 1000;
-    }
-    
-    .bottom-nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      padding: 8px 16px;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 11px;
-      font-weight: 500;
-    }
-    
-    .bottom-nav-item.active {
-      color: var(--primary);
-    }
-    
-    .bottom-nav-item span:first-child {
-      font-size: 22px;
-    }
-    
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 2000;
-      backdrop-filter: blur(10px);
-    }
-    
-    .modal-overlay.active {
-      display: flex;
-    }
-    
-    .modal {
-      background: var(--dark-card);
-      border-radius: 24px 24px 0 0;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      animation: slideUp 0.3s ease;
-    }
-    
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
-    }
-    
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px;
-      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
-      position: sticky;
-      top: 0;
-      background: var(--dark-card);
-      z-index: 10;
-    }
-    
-    .modal-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
-    
-    .modal-close {
-      width: 36px; height: 36px;
-      background: var(--dark-hover);
-      border: none;
-      border-radius: 10px;
-      color: var(--text-muted);
-      font-size: 20px;
-      cursor: pointer;
-    }
-    
-    .modal-body {
-      padding: 20px;
-    }
-    
-    .modal-footer {
-      display: flex;
-      gap: 12px;
-      padding: 20px;
-      border-top: 1px solid rgba(0, 212, 255, 0.1);
-    }
-    
-    .modal-footer .btn {
-      flex: 1;
-      justify-content: center;
-    }
-    
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    
-    .detail-item {
-      background: var(--dark-hover);
-      border-radius: 12px;
-      padding: 16px;
-    }
-    
-    .detail-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
-    
-    .detail-value {
-      font-size: 16px;
-      font-weight: 600;
-    }
-    
-    .response-box {
-      background: var(--dark-hover);
-      border: 1px solid rgba(0, 212, 255, 0.1);
-      border-radius: 12px;
-      padding: 16px;
-      font-size: 14px;
-      line-height: 1.7;
-      white-space: pre-wrap;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    
-    /* Desktop */
     @media (min-width: 1024px) {
-      .header { left: 280px; }
-      .sidenav { transform: translateX(0); }
-      .main { margin-left: 280px; padding: 90px 32px 40px; }
-      .menu-btn, .bottom-nav { display: none; }
-      .stats-grid { grid-template-columns: repeat(4, 1fr); }
-      .modal {
-        max-width: 600px;
-        border-radius: 24px;
-        margin: 40px auto;
-        max-height: 80vh;
-      }
-    }
-    
-    @media (min-width: 768px) and (max-width: 1023px) {
-      .stats-grid { grid-template-columns: repeat(4, 1fr); }
+      .header { left: 280px; } .sidenav { transform: translateX(0); } .main { margin-left: 280px; padding: 90px 32px 40px; } .menu-btn, .bottom-nav { display: none; } .stats-grid, .kpi-grid { grid-template-columns: repeat(4, 1fr); } .modal { max-width: 600px; border-radius: 24px; margin: 40px auto; max-height: 80vh; }
     }
   </style>
 </head>
@@ -581,255 +139,224 @@
   <div class="bg-animation"></div>
   
   <header class="header">
-    <a href="index.html" class="logo">
-      <div class="logo-icon">🤖</div>
-      <div class="logo-text">HostFlow</div>
-    </a>
+    <a href="index.html" class="logo"><div class="logo-icon">🤖</div><div class="logo-text">HostFlow</div></a>
     <button class="menu-btn" onclick="toggleNav()">☰</button>
   </header>
   
   <nav class="sidenav" id="sidenav">
     <div class="nav-title">Menu Principal</div>
-    <a href="index.html" class="nav-item active">
-      <span>📊</span> Dashboard
-    </a>
-    <a href="demandes.html" class="nav-item">
-      <span>📨</span> Demandes
-      <span class="nav-badge">3</span>
-    </a>
-    <a href="statistiques.html" class="nav-item">
-      <span>📈</span> Statistiques
-    </a>
-    <div class="nav-title">Configuration</div>
-    <a href="parametres.html" class="nav-item">
-      <span>⚙️</span> Paramètres
-    </a>
+    <a href="index.html" class="nav-item active"><span>📊</span>Dashboard</a>
+    <a href="demandes.html" class="nav-item"><span>📨</span>Demandes<span class="nav-badge">3</span></a>
+    <a href="statistiques.html" class="nav-item"><span>📈</span>Statistiques</a>
+    <a href="parametres.html" class="nav-item"><span>⚙️</span>Paramètres</a>
+    <div class="nav-title">Outils</div>
+    <a href="#" class="nav-item" onclick="showRelances()"><span>🔔</span>Relances<span class="nav-badge">2</span></a>
+    <a href="#" class="nav-item" onclick="showPricing()"><span>💰</span>Tarification</a>
   </nav>
   
   <main class="main">
     <h1 class="page-title">Dashboard</h1>
     <p class="page-subtitle">Vue d'ensemble de vos locations</p>
     
+    <!-- ALERT BANNER -->
+    <div class="alert-banner" id="alertBanner">
+      <div class="alert-content">
+        <span class="alert-icon">⚠️</span>
+        <div>
+          <div class="alert-text">Demande en attente depuis 45 min !</div>
+          <div class="alert-subtext">Marie D. - Anniversaire 15 juillet</div>
+        </div>
+      </div>
+      <button class="alert-btn" onclick="respondNow()">Répondre maintenant</button>
+    </div>
+    
+    <!-- STATS -->
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-icon blue">📨</div>
         <div class="stat-value" style="color: var(--primary);">12</div>
         <div class="stat-label">Nouvelles demandes</div>
+        <div class="stat-change positive"><span>↑</span> +3 aujourd'hui</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon green">✓</div>
         <div class="stat-value" style="color: var(--success);">48</div>
         <div class="stat-label">Réservations</div>
+        <div class="stat-change positive"><span>↑</span> +8 ce mois</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon orange">📈</div>
         <div class="stat-value" style="color: var(--warning);">85%</div>
         <div class="stat-label">Taux conversion</div>
+        <div class="stat-change positive"><span>↑</span> +12%</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon pink">€</div>
         <div class="stat-value" style="color: var(--accent);">12.4k</div>
         <div class="stat-label">Revenus (€)</div>
+        <div class="stat-change positive"><span>↑</span> +2.1k</div>
       </div>
     </div>
     
+    <!-- KPI SECTION -->
+    <div class="kpi-section">
+      <div class="kpi-header">
+        <h2 class="kpi-title">⚡ Performance Temps Réel</h2>
+        <span style="font-size: 13px; color: var(--text-muted);">Objectif: < 15 min</span>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi-item">
+          <div class="kpi-value" id="avgResponseTime">8 min</div>
+          <div class="kpi-label">Temps réponse moyen</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color: var(--success);">92%</div>
+          <div class="kpi-label">Objectif atteint</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value">3</div>
+          <div class="kpi-label">Demandes urgentes</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-value" style="color: var(--warning);">45 min</div>
+          <div class="kpi-label">Plus ancienne</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- RELANCES -->
     <div class="section">
       <div class="section-header">
-        <h2 class="section-title">Demandes récentes</h2>
+        <h2 class="section-title">🔔 Relances automatiques</h2>
+        <button class="btn btn-secondary" onclick="showAllRelances()">Voir tout</button>
+      </div>
+      <div class="relance-list">
+        <div class="relance-item">
+          <div class="relance-info">
+            <h4>Thomas L.</h4>
+            <p>Visite effectuée il y a 2 jours</p>
+          </div>
+          <span class="relance-type visit">Relance visite</span>
+        </div>
+        <div class="relance-item">
+          <div class="relance-info">
+            <h4>Sophie M.</h4>
+            <p>Demande sans réponse depuis 5 jours</p>
+          </div>
+          <span class="relance-type followup">Follow-up</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- RECENT INQUIRIES -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">📨 Demandes récentes</h2>
         <a href="demandes.html" class="btn btn-secondary">Voir tout</a>
       </div>
       <div class="filters">
         <button class="filter-chip active">Toutes</button>
         <button class="filter-chip">En attente</button>
+        <button class="filter-chip">Urgentes</button>
         <button class="filter-chip">Approuvées</button>
-        <button class="filter-chip">Refusées</button>
       </div>
       <div class="inquiry-list" id="inquiryList"></div>
     </div>
     
+    <!-- CHART -->
     <div class="section">
       <div class="section-header">
-        <h2 class="section-title">Évolution des revenus</h2>
+        <h2 class="section-title">📈 Évolution des revenus</h2>
         <select class="filter-chip" style="border: none;">
           <option>Ce mois</option>
           <option>Cette année</option>
         </select>
       </div>
-      <div class="chart-container">
+      <div class="chart-container" style="position: relative; height: 250px;">
         <canvas id="revenueChart"></canvas>
       </div>
     </div>
   </main>
   
   <nav class="bottom-nav">
-    <a href="index.html" class="bottom-nav-item active">
-      <span>📊</span>Dashboard
-    </a>
-    <a href="demandes.html" class="bottom-nav-item">
-      <span>📨</span>Demandes
-    </a>
-    <a href="statistiques.html" class="bottom-nav-item">
-      <span>📈</span>Stats
-    </a>
-    <a href="parametres.html" class="bottom-nav-item">
-      <span>⚙️</span>Réglages
-    </a>
+    <a href="index.html" class="bottom-nav-item active"><span>📊</span>Dashboard</a>
+    <a href="demandes.html" class="bottom-nav-item"><span>📨</span>Demandes</a>
+    <a href="statistiques.html" class="bottom-nav-item"><span>📈</span>Stats</a>
+    <a href="parametres.html" class="bottom-nav-item"><span>⚙️</span>Réglages</a>
   </nav>
-  
-  <div class="modal-overlay" id="modal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 class="modal-title">Détail de la demande</h3>
-        <button class="modal-close" onclick="closeModal()">×</button>
-      </div>
-      <div class="modal-body" id="modalBody"></div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
-        <button class="btn btn-primary" onclick="approveInquiry()">✓ Approuver</button>
-      </div>
-    </div>
-  </div>
 
   <script>
+    // Data
     const inquiries = [
-      { id: 1, name: 'Marie Dubois', initials: 'MD', event: 'Anniversaire', date: '15 juillet 2026', guests: 25, price: 900, score: 92, message: 'Bonjour, je souhaite organiser un anniversaire pour 25 personnes le 15 juillet.', response: 'Bonjour Marie,\n\nMerci pour votre intérêt ! Votre anniversaire du 15 juillet pour 25 personnes est tout à fait envisageable.\n\nLe tarif est de 900€.\n\nÀ bientôt,\nJarvis' },
-      { id: 2, name: 'Thomas Laurent', initials: 'TL', event: 'Cousinade', date: '22 août 2026', guests: 35, price: 1050, score: 65, message: 'Bonjour, nous sommes une famille de 35 personnes.', response: 'Bonjour Thomas,\n\nMerci pour votre demande. Pour 35 personnes, le tarif est de 1050€.\n\nCordialement,\nJarvis' },
-      { id: 3, name: 'Sophie Martin', initials: 'SM', event: 'Baby Shower', date: '5 septembre 2026', guests: 20, price: 900, score: 88, message: 'Bonjour, je souhaite organiser un baby shower pour 20 personnes.', response: 'Bonjour Sophie,\n\nAvec plaisir ! Le baby shower pour 20 personnes est possible au tarif de 900€.\n\nÀ bientôt,\nJarvis' }
+      { id: 1, name: 'Marie Dubois', initials: 'MD', event: 'Anniversaire', date: '15 juillet 2026', guests: 25, price: 900, score: 92, message: 'Bonjour, je souhaite organiser un anniversaire pour 25 personnes.', response: 'Bonjour Marie,\n\nMerci pour votre intérêt ! Votre anniversaire du 15 juillet pour 25 personnes est tout à fait envisageable.\n\nLe tarif est de 900€.\n\nÀ bientôt,\nHostFlow', waitTime: 45, status: 'pending' },
+      { id: 2, name: 'Thomas Laurent', initials: 'TL', event: 'Cousinade', date: '22 août 2026', guests: 35, price: 1050, score: 65, message: 'Bonjour, nous sommes une famille de 35 personnes.', response: 'Bonjour Thomas,\n\nMerci pour votre demande. Pour 35 personnes, le tarif est de 1050€.\n\nCordialement,\nHostFlow', waitTime: 120, status: 'pending' },
+      { id: 3, name: 'Sophie Martin', initials: 'SM', event: 'Baby Shower', date: '5 septembre 2026', guests: 20, price: 900, score: 88, message: 'Bonjour, je souhaite organiser un baby shower pour 20 personnes.', response: 'Bonjour Sophie,\n\nAvec plaisir ! Le baby shower pour 20 personnes est possible au tarif de 900€.\n\nÀ bientôt,\nHostFlow', waitTime: 5, status: 'approved' }
     ];
     
-    let currentInquiry = null;
-    
+    // Render inquiries with response time
     function renderInquiries() {
       const list = document.getElementById('inquiryList');
-      list.innerHTML = inquiries.map(i => `
-        <div class="inquiry-card" onclick="openInquiry(${i.id})">
-          <div class="inquiry-header">
-            <div class="inquiry-client">
-              <div class="client-avatar">${i.initials}</div>
-              <div class="client-info">
-                <h4>${i.name}</h4>
-                <p>${i.event}</p>
+      list.innerHTML = inquiries.filter(i => i.status === 'pending').map(i => {
+        const waitClass = i.waitTime < 30 ? 'good' : i.waitTime < 60 ? 'warning' : 'danger';
+        const urgentClass = i.waitTime > 30 ? 'urgent' : '';
+        return `
+          <div class="inquiry-card ${urgentClass}" onclick="openInquiry(${i.id})">
+            <span class="response-time ${waitClass}">${i.waitTime} min</span>
+            <div class="inquiry-header">
+              <div class="inquiry-client">
+                <div class="client-avatar">${i.initials}</div>
+                <div class="client-info">
+                  <h4>${i.name}</h4>
+                  <p>${i.event}</p>
+                </div>
               </div>
+              <div class="score-badge ${i.score >= 70 ? 'high' : 'medium'}">${i.score}</div>
             </div>
-            <div class="score-badge ${i.score >= 70 ? 'high' : 'medium'}">${i.score}</div>
+            <div class="inquiry-meta">
+              <span>📅 ${i.date}</span>
+              <span>👥 ${i.guests} pers.</span>
+              <span>💰 ${i.price}€</span>
+            </div>
+            <div class="inquiry-preview">${i.message}</div>
           </div>
-          <div class="inquiry-meta">
-            <span>📅 ${i.date}</span>
-            <span>👥 ${i.guests} pers.</span>
-            <span>💰 ${i.price}€</span>
-          </div>
-          <div class="inquiry-preview">${i.message}</div>
-          <div class="inquiry-actions">
-            <button class="btn btn-secondary" onclick="event.stopPropagation(); viewInquiry(${i.id})">👁 Voir</button>
-            <button class="btn btn-primary" onclick="event.stopPropagation(); approveInquiry(${i.id})">✓ Approuver</button>
-          </div>
-        </div>
-      `).join('');
-    }
-    
-    function toggleNav() {
-      document.getElementById('sidenav').classList.toggle('active');
-    }
-    
-    document.addEventListener('click', (e) => {
-      const nav = document.getElementById('sidenav');
-      const btn = document.querySelector('.menu-btn');
-      if (!nav.contains(e.target) && !btn.contains(e.target)) {
-        nav.classList.remove('active');
+        `;
+      }).join('');
+      
+      // Show alert if urgent
+      const urgent = inquiries.find(i => i.waitTime > 30 && i.status === 'pending');
+      if (urgent) {
+        document.getElementById('alertBanner').classList.add('active');
       }
-    });
+    }
+    
+    function toggleNav() { document.getElementById('sidenav').classList.toggle('active'); }
+    document.addEventListener('click', (e) => { const nav = document.getElementById('sidenav'); const btn = document.querySelector('.menu-btn'); if (!nav.contains(e.target) && !btn.contains(e.target)) nav.classList.remove('active'); });
     
     function openInquiry(id) {
-      currentInquiry = inquiries.find(i => i.id === id);
-      if (!currentInquiry) return;
-      
-      document.getElementById('modalBody').innerHTML = `
-        <div class="detail-grid">
-          <div class="detail-item">
-            <div class="detail-label">Client</div>
-            <div class="detail-value">${currentInquiry.name}</div>
-          </div>
-          <div class="detail-item">
-            <div class="detail-label">Événement</div>
-            <div class="detail-value">${currentInquiry.event}</div>
-          </div>
-          <div class="detail-item">
-            <div class="detail-label">Date</div>
-            <div class="detail-value">${currentInquiry.date}</div>
-          </div>
-          <div class="detail-item">
-            <div class="detail-label">Personnes</div>
-            <div class="detail-value">${currentInquiry.guests}</div>
-          </div>
-          <div class="detail-item">
-            <div class="detail-label">Prix</div>
-            <div class="detail-value">${currentInquiry.price}€</div>
-          </div>
-          <div class="detail-item">
-            <div class="detail-label">Score</div>
-            <div class="detail-value">${currentInquiry.score}/100</div>
-          </div>
-        </div>
-        <div style="margin-bottom: 16px;">
-          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Message</div>
-          <div class="response-box">${currentInquiry.message}</div>
-        </div>
-        <div>
-          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase;">Réponse générée</div>
-          <div class="response-box">${currentInquiry.response}</div>
-        </div>
-      `;
-      document.getElementById('modal').classList.add('active');
+      const i = inquiries.find(x => x.id === id);
+      window.location.href = 'demandes.html?id=' + id;
     }
     
-    function closeModal() {
-      document.getElementById('modal').classList.remove('active');
+    function respondNow() {
+      window.location.href = 'demandes.html';
     }
     
-    function viewInquiry(id) {
-      openInquiry(id);
-    }
-    
-    function approveInquiry(id) {
-      alert('Demande approuvée ! ✅');
-      closeModal();
-    }
+    function showRelances() { alert('Relances:\n\n• Thomas L. - Relance visite (J+2)\n• Sophie M. - Follow-up (J+5)'); }
+    function showPricing() { alert('Tarification dynamique:\n\n• Week-end: +100€\n• Juillet-Août: +150€\n• Ponts: +80€\n\nSuggestion: Augmenter de 10% ce week-end (forte demande)'); }
+    function showAllRelances() { showRelances(); }
     
     // Chart
-    const ctx = document.getElementById('revenueChart');
-    if (ctx) {
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
-          datasets: [{
-            label: 'Revenus (€)',
-            data: [7200, 10800, 9000, 12600, 14400, 18600],
-            borderColor: '#00d4ff',
-            backgroundColor: 'rgba(0, 212, 255, 0.1)',
-            tension: 0.4,
-            fill: true
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b8b9e' } },
-            x: { grid: { display: false }, ticks: { color: '#8b8b9e' } }
-          }
-        }
-      });
-    }
-    
-    // Filter chips
-    document.querySelectorAll('.filter-chip').forEach(chip => {
-      chip.addEventListener('click', function() {
-        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-        this.classList.add('active');
-      });
+    new Chart(document.getElementById('revenueChart'), {
+      type: 'line',
+      data: { labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'], datasets: [{ label: 'Revenus (€)', data: [7200, 10800, 9000, 12600, 14400, 18600], borderColor: '#00d4ff', backgroundColor: 'rgba(0, 212, 255, 0.1)', tension: 0.4, fill: true }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b8b9e' } }, x: { grid: { display: false }, ticks: { color: '#8b8b9e' } } } }
     });
+    
+    // Update response time every minute
+    setInterval(() => {
+      inquiries.forEach(i => { if (i.status === 'pending') i.waitTime++; });
+      renderInquiries();
+    }, 60000);
     
     renderInquiries();
   </script>
