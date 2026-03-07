@@ -1,6 +1,6 @@
 # 🤖 Airbnb Agent
 
-Agent automatisé pour répondre aux demandes Airbnb - Extérieur Verfeil
+Agent automatisé pour répondre aux demandes Airbnb - Domaine Lavalette
 
 ## Fonctionnalités
 
@@ -122,4 +122,4 @@ airbnb-agent/
 
 ---
 
-Créé pour Farès | Extérieur Verfeil | 40 pers max
+Créé pour Farès | Domaine Lavalette | 40 pers max
