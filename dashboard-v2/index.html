@@ -6,7 +6,6 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>HostFlow — Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="../hostflow-mobile.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -45,15 +44,39 @@
     }
     .sidebar-header { padding: 20px; border-bottom: 1px solid var(--border); }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .brand-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #3b82f6, #06b6d4); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .brand-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
     .brand-text { font-size: 18px; font-weight: 700; color: var(--text-primary); }
     .nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
     .nav-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); padding: 8px 12px; margin-bottom: 4px; }
     .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 4px; transition: all 0.15s; cursor: pointer; }
     .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
-    .nav-item.active { background: var(--bg-elevated); color: var(--text-primary); }
+    .nav-item.active { background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); }
     .nav-item span:first-child { font-size: 18px; width: 24px; text-align: center; }
     .badge { margin-left: auto; background: var(--danger); color: white; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; }
+    
+    /* Admin profile */
+    .admin-profile { 
+      padding: 16px; 
+      border-top: 1px solid var(--border); 
+      display: flex; 
+      align-items: center; 
+      gap: 12px;
+    }
+    .admin-avatar { 
+      width: 36px; 
+      height: 36px; 
+      background: linear-gradient(135deg, #10b981, #06b6d4); 
+      border-radius: 50%; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-weight: 600; 
+      font-size: 13px; 
+    }
+    .admin-info { flex: 1; }
+    .admin-name { font-weight: 600; font-size: 14px; }
+    .admin-role { font-size: 12px; color: var(--text-tertiary); }
+    .admin-menu { color: var(--text-tertiary); cursor: pointer; }
     
     /* Main */
     .main { flex: 1; margin-left: 260px; padding: 24px 32px; max-width: 1400px; }
@@ -61,55 +84,167 @@
     .page-title { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
     .mobile-menu-btn { display: none; width: 40px; height: 40px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 20px; cursor: pointer; }
     
-    /* Alert */
-    .alert { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; display: none; align-items: center; justify-content: space-between; }
+    /* Alert - New style */
+    .alert { 
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05)); 
+      border: 1px solid rgba(245, 158, 11, 0.3); 
+      border-radius: 12px; 
+      padding: 16px 20px; 
+      margin-bottom: 24px; 
+      display: none; 
+      align-items: center; 
+      justify-content: space-between; 
+    }
     .alert.active { display: flex; }
-    .alert-content { display: flex; align-items: center; gap: 12px; }
-    .alert-text { font-weight: 600; color: #fca5a5; }
-    .alert-btn { background: var(--danger); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    .alert-content { display: flex; flex-direction: column; gap: 4px; }
+    .alert-title { font-weight: 700; color: #fbbf24; font-size: 15px; }
+    .alert-subtitle { font-size: 13px; color: var(--text-secondary); }
+    .alert-icon { 
+      width: 32px; 
+      height: 32px; 
+      background: rgba(245, 158, 11, 0.2); 
+      border-radius: 8px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      margin-right: 12px;
+    }
+    .alert-left { display: flex; align-items: center; }
+    .alert-btn { 
+      background: var(--warning); 
+      color: #0a0a0f; 
+      border: none; 
+      padding: 10px 20px; 
+      border-radius: 8px; 
+      font-weight: 600; 
+      cursor: pointer; 
+      font-size: 14px;
+    }
     
     /* Stats */
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-    .stat-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 20px; transition: all 0.2s; }
+    .stat-card { 
+      background: var(--bg-secondary); 
+      border: 1px solid var(--border); 
+      border-radius: 16px; 
+      padding: 20px; 
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
     .stat-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
-    .stat-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
-    .stat-value { font-size: 32px; font-weight: 700; margin-bottom: 4px; }
-    .stat-change { font-size: 13px; display: flex; align-items: center; gap: 4px; }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .stat-card:hover::before { opacity: 1; }
+    .stat-label { 
+      font-size: 13px; 
+      color: var(--text-secondary); 
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-label::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .stat-blue .stat-label::before { background: var(--accent); }
+    .stat-green .stat-label::before { background: var(--success); }
+    .stat-orange .stat-label::before { background: var(--warning); }
+    .stat-purple .stat-label::before { background: #a78bfa; }
+    .stat-value { font-size: 36px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .stat-change { font-size: 13px; display: flex; align-items: center; gap: 4px; color: var(--text-secondary); }
     .positive { color: var(--success); }
     
+    /* Two column layout */
+    .two-columns { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+    
     /* Section */
-    .section { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 24px; overflow: hidden; }
+    .section { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
     .section-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border); }
     .section-title { font-size: 16px; font-weight: 600; }
     .btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; }
     .btn-primary { background: var(--accent); color: white; }
     .btn-primary:hover { background: var(--accent-light); }
-    .btn-secondary { background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border); }
-    .btn-secondary:hover { border-color: var(--border-hover); }
+    .btn-text { color: var(--accent); background: none; padding: 0; }
+    .btn-text:hover { color: var(--accent-light); }
     
-    /* Table */
+    /* Table - Compact style */
     .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table { width: 100%; border-collapse: collapse; }
-    th { text-align: left; padding: 12px 24px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); border-bottom: 1px solid var(--border); white-space: nowrap; }
-    td { padding: 16px 24px; border-bottom: 1px solid var(--border); font-size: 14px; }
+    th { text-align: left; padding: 12px 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: 14px 20px; border-bottom: 1px solid var(--border); font-size: 14px; }
     tr:hover td { background: var(--bg-tertiary); }
     tr:last-child td { border-bottom: none; }
     .client-cell { display: flex; align-items: center; gap: 12px; }
-    .avatar { width: 36px; height: 36px; background: linear-gradient(135deg, #3b82f6, #06b6d4); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; }
+    .avatar { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; }
+    .avatar-blue { background: linear-gradient(135deg, #3b82f6, #06b6d4); }
+    .avatar-green { background: linear-gradient(135deg, #10b981, #06b6d4); }
+    .avatar-purple { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
     .client-name { font-weight: 600; }
     .client-meta { font-size: 13px; color: var(--text-tertiary); }
-    .score { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; font-size: 13px; font-weight: 700; }
-    .score-high { background: rgba(16, 185, 129, 0.15); color: var(--success); }
-    .score-medium { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
-    .status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 500; }
-    .status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
-    .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-    .status-pending::before { background: var(--warning); }
-    .status-approved { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-    .status-approved::before { background: var(--success); }
+    .event-type { color: var(--text-secondary); }
+    .date-compact { color: var(--text-secondary); font-size: 13px; line-height: 1.4; }
     
-    /* Chart */
-    .chart-container { padding: 24px; height: 280px; }
+    /* Performance section */
+    .performance-list { padding: 16px 20px; }
+    .perf-item { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      padding: 14px 0; 
+      border-bottom: 1px solid var(--border);
+    }
+    .perf-item:last-child { border-bottom: none; }
+    .perf-left { display: flex; align-items: center; gap: 12px; }
+    .perf-icon { 
+      width: 36px; 
+      height: 36px; 
+      border-radius: 8px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-size: 16px;
+    }
+    .perf-icon-blue { background: rgba(59, 130, 246, 0.15); }
+    .perf-icon-yellow { background: rgba(245, 158, 11, 0.15); }
+    .perf-icon-green { background: rgba(16, 185, 129, 0.15); }
+    .perf-label { font-size: 14px; color: var(--text-secondary); }
+    .perf-value { font-size: 16px; font-weight: 700; }
+    .perf-value-blue { color: var(--accent-light); }
+    .perf-value-green { color: var(--success); }
+    
+    /* Goal section */
+    .goal-section { padding: 20px; border-top: 1px solid var(--border); }
+    .goal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .goal-label { font-size: 13px; color: var(--text-secondary); }
+    .goal-value { font-size: 18px; font-weight: 700; }
+    .goal-value span { color: var(--text-tertiary); font-weight: 400; }
+    .progress-bar { 
+      height: 8px; 
+      background: var(--bg-tertiary); 
+      border-radius: 4px; 
+      overflow: hidden; 
+      margin-bottom: 8px;
+    }
+    .progress-fill { 
+      height: 100%; 
+      background: linear-gradient(90deg, var(--accent), var(--success)); 
+      border-radius: 4px; 
+      transition: width 0.3s ease;
+    }
+    .goal-footer { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-tertiary); }
     
     /* Mobile Nav */
     .mobile-nav {
@@ -129,6 +264,9 @@
     .mobile-nav-item span:first-child { font-size: 20px; }
     
     /* RESPONSIVE */
+    @media (max-width: 1200px) {
+      .two-columns { grid-template-columns: 1fr; }
+    }
     @media (max-width: 1024px) {
       .sidebar { transform: translateX(-100%); }
       .sidebar.open { transform: translateX(0); }
@@ -137,12 +275,15 @@
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .mobile-nav { display: block; }
       .header { margin-bottom: 16px; }
+      .admin-profile { display: none; }
     }
     @media (max-width: 640px) {
       .stats-grid { grid-template-columns: 1fr; }
       .page-title { font-size: 24px; }
       th, td { padding: 12px 16px; }
       .section-header { padding: 16px 20px; }
+      .alert { flex-direction: column; gap: 12px; text-align: center; }
+      .alert-left { flex-direction: column; }
     }
   </style>
 </head>
@@ -173,6 +314,16 @@
           <span>◊</span>Paramètres
         </a>
       </nav>
+      
+      <!-- Admin Profile -->
+      <div class="admin-profile">
+        <div class="admin-avatar">JD</div>
+        <div class="admin-info">
+          <div class="admin-name">Julien D.</div>
+          <div class="admin-role">Administrateur</div>
+        </div>
+        <div class="admin-menu">⋯</div>
+      </div>
     </aside>
     
     <!-- Overlay for mobile -->
@@ -185,74 +336,109 @@
         <button class="mobile-menu-btn" onclick="openSidebar()">☰</button>
       </div>
       
-      <!-- Alert -->
+      <!-- Alert - New style -->
       <div class="alert" id="urgentAlert">
-        <div class="alert-content">
-          <span>⚠️</span>
-          <span class="alert-text">3 demandes en attente de réponse depuis &gt; 30 min</span>
+        <div class="alert-left">
+          <div class="alert-icon">⚠️</div>
+          <div class="alert-content">
+            <div class="alert-title">3 demandes en attente de réponse</div>
+            <div class="alert-subtitle">Sans réponse depuis plus de 30 minutes — action requise</div>
+          </div>
         </div>
-        <button class="alert-btn" onclick="window.location.href='demandes.html'">Voir</button>
+        <button class="alert-btn" onclick="window.location.href='demandes.html'">Voir maintenant</button>
       </div>
       
       <!-- Stats -->
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">◉ Nouvelles demandes</div>
+        <div class="stat-card stat-blue">
+          <div class="stat-label">Nouvelles demandes</div>
           <div class="stat-value" style="color: var(--accent);">12</div>
-          <div class="stat-change positive">↑ +3 aujourd'hui</div>
+          <div class="stat-change"><span class="positive">↑ +3</span> aujourd'hui</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">◈ Réservations</div>
+        <div class="stat-card stat-green">
+          <div class="stat-label">Réservations</div>
           <div class="stat-value" style="color: var(--success);">48</div>
-          <div class="stat-change positive">↑ +8 ce mois</div>
+          <div class="stat-change"><span class="positive">↑ +8</span> ce mois</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">◆ Taux conversion</div>
+        <div class="stat-card stat-orange">
+          <div class="stat-label">Taux de conversion</div>
           <div class="stat-value" style="color: var(--warning);">85%</div>
-          <div class="stat-change positive">↑ +12%</div>
+          <div class="stat-change"><span class="positive">↑ +12%</span> vs. mois dernier</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">◇ Revenus</div>
+        <div class="stat-card stat-purple">
+          <div class="stat-label">Revenus</div>
           <div class="stat-value" style="color: #a78bfa;">€12.4k</div>
-          <div class="stat-change positive">↑ +€2.1k</div>
+          <div class="stat-change"><span class="positive">↑ +€2.1k</span> ce mois</div>
         </div>
       </div>
       
-      <!-- Recent Inquiries -->
-      <div class="section">
-        <div class="section-header">
-          <h2 class="section-title">Demandes récentes</h2>
-          <a href="demandes.html" class="btn btn-secondary">Voir tout →</a>
+      <!-- Two columns layout -->
+      <div class="two-columns">
+        <!-- Recent Inquiries -->
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">Demandes récentes</h2>
+            <a href="demandes.html" class="btn btn-text">Voir tout →</a>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Événement</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="recentTable">
+                <!-- JS populated -->
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Client</th>
-                <th>Événement</th>
-                <th>Date</th>
-                <th>Score</th>
-                <th>Statut</th>
-              </tr>
-            </thead>
-            <tbody id="recentTable">
-              <!-- JS populated -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-      
-      <!-- Chart -->
-      <div class="section">
-        <div class="section-header">
-          <h2 class="section-title">Évolution des revenus</h2>
-          <select class="btn btn-secondary" style="background: var(--bg-tertiary); border: none;">
-            <option>6 derniers mois</option>
-            <option>Cette année</option>
-          </select>
-        </div>
-        <div class="chart-container">
-          <canvas id="revenueChart"></canvas>
+        
+        <!-- Performance -->
+        <div class="section">
+          <div class="section-header">
+            <h2 class="section-title">Performances</h2>
+          </div>
+          <div class="performance-list">
+            <div class="perf-item">
+              <div class="perf-left">
+                <div class="perf-icon perf-icon-blue">📊</div>
+                <div class="perf-label">Réponse moy.</div>
+              </div>
+              <div class="perf-value perf-value-blue">18 min</div>
+            </div>
+            <div class="perf-item">
+              <div class="perf-left">
+                <div class="perf-icon perf-icon-yellow">⭐</div>
+                <div class="perf-label">Satisfaction</div>
+              </div>
+              <div class="perf-value perf-value-green">4.8/5</div>
+            </div>
+            <div class="perf-item">
+              <div class="perf-left">
+                <div class="perf-icon perf-icon-green">🔄</div>
+                <div class="perf-label">Fidélisation</div>
+              </div>
+              <div class="perf-value perf-value-blue">73%</div>
+            </div>
+          </div>
+          
+          <!-- Goal -->
+          <div class="goal-section">
+            <div class="goal-header">
+              <div class="goal-label">Objectif mensuel</div>
+              <div class="goal-value">€18 500 <span>/ €25 000</span></div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 74%;"></div>
+            </div>
+            <div class="goal-footer">
+              <span>74% atteint</span>
+              <span>Il reste 26%</span>
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -279,9 +465,9 @@
   <script>
     // Data
     const inquiries = [
-      { id: 1, name: 'Marie Dubois', initials: 'MD', event: 'Anniversaire', date: '15 juil. 2026', score: 92, status: 'pending' },
-      { id: 2, name: 'Thomas Laurent', initials: 'TL', event: 'Cousinade', date: '22 août 2026', score: 65, status: 'pending' },
-      { id: 3, name: 'Sophie Martin', initials: 'SM', event: 'Baby Shower', date: '5 sept. 2026', score: 88, status: 'approved' }
+      { id: 1, name: 'Marie Dubois', initials: 'MD', event: 'Anniversaire', date: '15 juil.\n2026', avatar: 'blue' },
+      { id: 2, name: 'Thomas Laurent', initials: 'TL', event: 'Cousinade', date: '22 août\n2026', avatar: 'green' },
+      { id: 3, name: 'Sophie Martin', initials: 'SM', event: 'Baby Shower', date: '5 sept.\n2026', avatar: 'purple' }
     ];
     
     // Render recent inquiries
@@ -291,17 +477,15 @@
         <tr onclick="window.location.href='demandes.html?id=${i.id}'" style="cursor: pointer;">
           <td>
             <div class="client-cell">
-              <div class="avatar">${i.initials}</div>
+              <div class="avatar avatar-${i.avatar}">${i.initials}</div>
               <div>
                 <div class="client-name">${i.name}</div>
                 <div class="client-meta">${i.event}</div>
               </div>
             </div>
           </td>
-          <td>${i.event}</td>
-          <td>${i.date}</td>
-          <td><span class="score ${i.score >= 70 ? 'score-high' : 'score-medium'}">${i.score}</span></td>
-          <td><span class="status ${i.status === 'pending' ? 'status-pending' : 'status-approved'}">${i.status === 'pending' ? 'En attente' : 'Approuvée'}</span></td>
+          <td class="event-type">${i.event}</td>
+          <td class="date-compact">${i.date.replace('\n', '<br>')}</td>
         </tr>
       `).join('');
     }
@@ -322,46 +506,9 @@
     }
     
     // Show alert if pending
-    const pending = inquiries.filter(i => i.status === 'pending').length;
+    const pending = inquiries.filter(i => i.status === 'pending' || true).length;
     if (pending > 0) {
       document.getElementById('urgentAlert').classList.add('active');
-    }
-    
-    // Chart
-    const ctx = document.getElementById('revenueChart');
-    if (ctx) {
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
-          datasets: [{
-            label: 'Revenus',
-            data: [7200, 10800, 9000, 12600, 14400, 18600],
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-            borderWidth: 2,
-            tension: 0.4,
-            fill: true,
-            pointRadius: 4,
-            pointHoverRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { 
-              grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
-              ticks: { color: '#71717a', callback: v => '€' + v }
-            },
-            x: { 
-              grid: { display: false },
-              ticks: { color: '#71717a' }
-            }
-          }
-        }
-      });
     }
     
     renderRecent();
